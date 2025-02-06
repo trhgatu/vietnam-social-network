@@ -1,15 +1,12 @@
-import { PropsWithChildren } from 'react';
-
 import { Footer } from './footer';
 import { Header } from './header';
+import { LayoutProps } from '@/models/common';
 
-export function MainLayout({ children }: PropsWithChildren) {
+export function MainLayout({ children }: LayoutProps) {
     return (
         <>
             <Header />
-
             {children}
-
             <Footer />
         </>
     );

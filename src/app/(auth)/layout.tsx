@@ -1,8 +1,8 @@
 import { LayoutProps } from "@/models/common";
-import { MainLayout } from "@/shared/layouts/main";
+import { AuthLayout } from "@/shared/layouts/auth";
 
 export default function Layout({children}: LayoutProps) {
   return (
-    <MainLayout>{children}</MainLayout>
+    <AuthLayout>{children}</AuthLayout>
   )
 }

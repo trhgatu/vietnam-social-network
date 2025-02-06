@@ -1,7 +1,7 @@
 import { HomePage } from '.';
 
 export const metadata = {
-    title: 'Template NextJS - Home',
+    title: 'Blog - Home',
 };
 
 function HomePageRoute() {
