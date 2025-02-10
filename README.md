@@ -24,9 +24,4 @@
 - **Websocket**
 - **Axios & SWR** (gọi API RESTful)
 
-### 4. Push code lên remote
-
-```bash
-git push origin branch-name
-```
 
