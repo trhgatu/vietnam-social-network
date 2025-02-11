@@ -1,7 +1,7 @@
 import { HomePage } from '.';
 
 export const metadata = {
-    title: 'Blog - Home',
+    title: 'VS - Home',
 };
 
 function HomePageRoute() {

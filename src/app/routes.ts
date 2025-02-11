@@ -1,5 +1,6 @@
 const ROOTS = {
     HOME: '/',
+    FRIENDS: '/friends',
     AUTH: '/auth',
 };
 

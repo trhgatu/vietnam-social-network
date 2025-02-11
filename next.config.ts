@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       }
 
     ]
+  },
+  images: {
+    domains: ["avatar.iran.liara.run"],
   }
 };
 
