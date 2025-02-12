@@ -3,7 +3,7 @@ import { FaApple } from "react-icons/fa"
 
 const ButtonApple = () => {
     return (
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button variant="outline" className="flex items-center cursor-pointer gap-2">
             <FaApple size={20} /> Apple
         </Button>
     )

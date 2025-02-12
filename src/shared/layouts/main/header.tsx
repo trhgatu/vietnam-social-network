@@ -1,6 +1,5 @@
 'use client'
 
-import { ModeToggle } from "@/components/toggle-theme";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -48,7 +47,7 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="pt-2 shadow-sm bg-white dark:bg-gray-900">
+    <header className="pt-2 shadow-sm dark:bg-gray-800">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Left Section - Logo */}
         <div className="flex items-center space-x-3">
@@ -96,7 +95,7 @@ export function Header() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Trang chủ</p>
+                  <p>Bạn bè</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -105,7 +104,6 @@ export function Header() {
 
         {/* Right Section - Icons & User */}
         <div className="flex items-center space-x-4">
-          <ModeToggle />
           <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
             <Bell className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
