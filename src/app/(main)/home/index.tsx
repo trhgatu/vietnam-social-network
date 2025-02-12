@@ -10,7 +10,6 @@ interface Post {
 
 export function HomePage() {
     const { data: posts, error, isLoading } = useSWR<Post[]>("/posts", fetcher);
-    console.log(posts)
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error loading posts</p>;
 

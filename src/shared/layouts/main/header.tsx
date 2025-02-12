@@ -48,7 +48,7 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="pt-2 shadow bg-white dark:bg-gray-900">
+    <header className="pt-2 shadow-sm bg-white dark:bg-gray-900">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Left Section - Logo */}
         <div className="flex items-center space-x-3">
@@ -59,7 +59,7 @@ export function Header() {
             <input
               type="text"
               placeholder="Search..."
-              className="px-4 py-1 rounded-full bg-gray-100 dark:bg-gray-800 focus:outline-none pl-10"
+              className="px-4 py-1 rounded-full bg-gray-100 dark:bg-gray-800 focus:outline-hidden pl-10"
             />
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
           </div>
