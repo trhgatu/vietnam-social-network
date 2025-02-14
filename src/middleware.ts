@@ -1,16 +1,26 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value
+const privatePaths = ['/profile', '/home']
+const authPaths = ['/sign-in', '/sign-up']
 
-  if (!token && request.nextUrl.pathname.startsWith('/home')) {
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const sessionToken = request.cookies.get('sessionToken')?.value
+
+  // Chưa đăng nhập thì không cho vào private paths
+  if (privatePaths.some((path) => pathname.startsWith(path)) && !sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', request.url))
   }
-
+  // Đăng nhập rồi thì không cho vào login/register nữa
+  if (authPaths.some((path) => pathname.startsWith(path)) && sessionToken) {
+    return NextResponse.redirect(new URL('/home', request.url))
+  }
   return NextResponse.next()
 }
 
+// See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/home', '/profile']
+  matcher: ['/home', '/profile', '/sign-in', '/sign-up',]
 }
