@@ -1,4 +1,4 @@
-import { LayoutProps } from "@/shared/models/common";
+import { LayoutProps } from "@/models/common";
 import { AuthLayout } from "@/shared/layouts/auth";
 
 export default function Layout({children}: LayoutProps) {
