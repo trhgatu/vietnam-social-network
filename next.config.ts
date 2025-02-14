@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: true,
+      },
+    ];
+  },
+  reactStrictMode: false,
   images: {
-    remotePatterns :[
+    remotePatterns: [
       {
         protocol: "https",
         hostname: "avatar.iran.liara.run",
