@@ -52,7 +52,11 @@ export function Header() {
         {/* Left Section - Logo */}
         <div className="flex items-center space-x-3">
           <Link href="/">
-            <Image src="/assets/logo/logo.svg" alt="Logo" width={40} height={40} className="cursor-pointer" />
+            <Image src="/assets/logo/logo.svg" alt="Logo"
+              width={40} height={40}
+              className="cursor-pointer"
+              priority
+            />
           </Link>
           <div className="relative">
             <input

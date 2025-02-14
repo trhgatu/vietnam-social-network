@@ -1,11 +1,11 @@
 "use client";
 
 import useSWR from "swr";
-import { fetcher } from "@/api/axios-client";
+import { fetcher } from "@/api-client/axios-client"
 
 interface Post {
-  _id: string;
-  title: string;
+    _id: string;
+    title: string;
 }
 
 export function HomePage() {
