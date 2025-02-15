@@ -12,8 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/shared/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import instance from "@/api-client/axios-client";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignInPage() {
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
@@ -30,7 +32,10 @@ export default function SignInPage() {
       const response = await instance.post("/auth/login", { email, password });
       if (response.data.success) {
         login(response.data.user)
-        router.push("/home");
+        toast({
+          description: `${response?.data.message}`
+        })
+        router.push('/home');
       } else {
         setError(response.data.message);
       }
