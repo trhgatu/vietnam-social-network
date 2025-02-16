@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatar.iran.liara.run",
         pathname: "/public/**"
+      },
+      {
+        protocol: "https",
+        hostname : "picsum.photos",
+        pathname: "/200/**"
       }
     ]
   }

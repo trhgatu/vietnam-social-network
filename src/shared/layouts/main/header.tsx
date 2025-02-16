@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -12,15 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
-
-import { Search, Home, Users, Bell, MessageSquare, User } from "lucide-react";
+import { Search, Bell, MessageSquare, User } from "lucide-react";
 import { useAuth } from "@/shared/contexts/auth-context";
 
 const messages = [
@@ -45,21 +37,11 @@ const messages = [
 ];
 
 export function Header() {
-  const pathname = usePathname();
   const { user } = useAuth();
-
   return (
-    <header className="pt-2 shadow-sm dark:bg-gray-800">
+    <header className="h-10 shadow-sm dark:bg-gray-800">
       <div className="container mx-auto flex items-center justify-between px-4">
-        {/* Left Section - Logo */}
         <div className="flex items-center space-x-3">
-          <Link href="/">
-            <Image src="/assets/logo/logo.svg" alt="Logo"
-              width={40} height={40}
-              className="cursor-pointer"
-              priority
-            />
-          </Link>
           <div className="relative">
             <input
               type="text"
@@ -69,46 +51,6 @@ export function Header() {
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
           </div>
         </div>
-
-        {/* Middle Section - Navigation */}
-        <nav className="hidden md:flex space-x-6">
-          <Link href="/">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div
-                    className={`p-4 px-10 rounded ${pathname === "/home" ? "bg-gray-300 dark:bg-gray-700" : "hover:bg-gray-200 dark:hover:bg-gray-800"
-                      }`}
-                  >
-                    <Home className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Trang chủ</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </Link>
-          <Link href="/friends">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div
-                    className={`p-4 px-10 rounded ${pathname === "/friends" ? "bg-gray-300 dark:bg-gray-700" : "hover:bg-gray-200 dark:hover:bg-gray-800"
-                      }`}
-                  >
-                    <Users className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Bạn bè</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </Link>
-        </nav>
-
-        {/* Right Section - Icons & User */}
         <div className="flex items-center space-x-4">
           <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
             <Bell className="h-6 w-6 text-gray-600 dark:text-gray-300" />
@@ -125,7 +67,12 @@ export function Header() {
               <div className="max-h-60 overflow-y-auto">
                 {messages.map((msg) => (
                   <DropdownMenuItem key={msg.id} className="flex items-center space-x-3 p-2">
-                    <Image src={msg.avatar} alt={msg.name} width={40} height={40} className="rounded-full" />
+                    <Image src={msg.avatar}
+                      alt={msg.name}
+                      width={40} height={40}
+                      className="rounded-full"
+                      priority
+                    />
                     <div className="flex flex-col">
                       <span className="font-medium">{msg.name}</span>
                       <span className="text-sm text-gray-500">{msg.message}</span>
@@ -149,11 +96,12 @@ export function Header() {
             <DropdownMenuContent className="w-64 mr-10">
               <DropdownMenuLabel className="flex items-center space-x-3 p-3">
                 <Image
-                  src="https://avatar.iran.liara.run/public/girl" // Thay bằng avatar của user
+                  src="https://avatar.iran.liara.run/public/girl"
                   alt="User Avatar"
                   width={40}
                   height={40}
                   className="rounded-full"
+                  priority
                 />
                 <div>
                   <span className="font-medium">{user?.name}</span>
