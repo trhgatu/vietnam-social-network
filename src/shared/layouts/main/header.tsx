@@ -39,8 +39,8 @@ const messages = [
 export function Header() {
   const { user } = useAuth();
   return (
-    <header className="h-10 shadow-sm dark:bg-gray-800">
-      <div className="container mx-auto flex items-center justify-between px-4">
+    <header className="h-[60px] fixed top-0 left-0 right-0 w-full shadow-md bg-white z-50 flex items-center">
+      <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="relative">
             <input
@@ -55,7 +55,7 @@ export function Header() {
           <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
             <Bell className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <div className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
                 <MessageSquare className="h-6 w-6 text-gray-600 dark:text-gray-300" />
@@ -87,7 +87,7 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <div className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
                 <User className="h-6 w-6 text-gray-600 dark:text-gray-300" />

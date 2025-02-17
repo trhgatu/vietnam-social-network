@@ -32,7 +32,6 @@ export function NewFeeds() {
         <div>
             {posts.map((post) => (
                 <Card key={post.id} className='mb-4'>
-                    {/* Header */}
                     <CardHeader>
                         <CardTitle>
                             <div className="flex items-center gap-3">
@@ -42,19 +41,17 @@ export function NewFeeds() {
                         </CardTitle>
                         <CardDescription>{post.content}</CardDescription>
                     </CardHeader>
-
-                    {/* Ảnh bài viết */}
                     <CardContent>
                         <div className="relative w-full h-64">
                             <Image src={post.image}
                                 alt="Post image"
-                                layout="fill"
-                                objectFit="cover"
-                                className="rounded-lg" />
+                                fill
+                                style={{ objectFit: "cover" }}
+                                className="rounded-lg"
+                            />
                         </div>
                     </CardContent>
 
-                    {/* Nút Like, Comment, Share */}
                     <CardFooter className="flex justify-between">
                         <Button variant="ghost" className="flex items-center gap-2">
                             <ThumbsUp size={20} /> Like

@@ -1,5 +1,4 @@
-import { NewFeeds } from "@/shared/components/main/home/new-feed";
-
+import { NewFeeds } from "@/app/(main)/home/components/new-feed";
 export function HomePage() {
 
     return (
