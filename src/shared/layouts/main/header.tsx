@@ -39,7 +39,7 @@ const messages = [
 export function Header() {
   const { user } = useAuth();
   return (
-    <header className="h-[60px] fixed top-0 left-0 right-0 w-full shadow-md bg-white z-50 flex items-center">
+    <header className="h-[60px] fixed top-0 left-0 right-0 w-full border-b border-b-[#D9D9D9] bg-white z-50 flex items-center">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="relative">
