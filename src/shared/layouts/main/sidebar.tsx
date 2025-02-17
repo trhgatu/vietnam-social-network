@@ -17,7 +17,7 @@ export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className={`${className} w-1/5 fixed top-[60px] left-0 h-[calc(100vh-64px)] bg-white border-r border-r-[#D9D9D9] overflow-y-auto`}>
+    <div className={`${className} w-1/5 fixed top-[60px] left-0 h-[calc(100vh-64px)] border-r border-r-[#D9D9D9] dark:border-r-[#333333] overflow-y-auto`}>
       <div className='p-6'>
         <div className="flex justify-center">
           <Link href="/">
@@ -34,7 +34,7 @@ export function Sidebar({ className }: SidebarProps) {
         <div className="mt-6 space-y-6">
           <Link
             href="/home"
-            className={`flex items-center gap-3 p-3 rounded-md ${pathname === "/home" ? "bg-gray-300" : "hover:bg-gray-200"}`}
+            className={`hover:transition-all duration-200 mb-1 flex items-center gap-3 p-3 rounded-md ${pathname === "/home" ? "bg-gray-300" : "hover:bg-gray-200"}`}
           >
             <TooltipProvider>
               <Tooltip>

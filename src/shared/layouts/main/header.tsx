@@ -14,6 +14,7 @@ import {
 
 import { Search, Bell, MessageSquare, User } from "lucide-react";
 import { useAuth } from "@/shared/contexts/auth-context";
+import { ModeToggle } from "@/components/toggle-theme";
 
 const messages = [
   {
@@ -39,7 +40,7 @@ const messages = [
 export function Header() {
   const { user } = useAuth();
   return (
-    <header className="h-[60px] fixed top-0 left-0 right-0 w-full border-b border-b-[#D9D9D9] bg-white z-50 flex items-center">
+    <header className="h-[60px] fixed top-0 left-0 right-0 w-full border-b border-b-[#D9D9D9] dark:border-b-[#333333] dark:bg-black bg-white z-50 flex items-center">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="relative">
@@ -52,6 +53,7 @@ export function Header() {
           </div>
         </div>
         <div className="flex items-center space-x-4">
+          <ModeToggle/>
           <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
             <Bell className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>

@@ -7,7 +7,7 @@ interface RightSidebarProps {
 }
 export function RightSidebar({ className }: RightSidebarProps) {
   return (
-    <div className={`${className} w-1/5 fixed top-[64px] right-0 h-[calc(100vh-64px)] bg-white shadow-md overflow-y-auto`}>
+    <div className={`${className} w-1/5 fixed top-[64px] right-0 h-[calc(100vh-64px)] shadow-md overflow-y-auto`}>
       <div className="py-6 px-4">
         <h2 className="font-semibold text-lg mb-4">Đề xuất kết bạn</h2>
         <div className="space-y-4">
