@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 const privatePaths = ['/profile', '/home']
-const authPaths = ['/sign-in', '/sign-up']
+const authPaths = ['/sign-in', '/sign-up', '/forgot-password']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -19,5 +19,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/home', '/profile', '/sign-in', '/sign-up',]
+  matcher: ['/home', '/profile', '/sign-in', '/sign-up'/* ,'/forgot-password' */]
 }

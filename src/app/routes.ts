@@ -2,6 +2,7 @@ const ROOTS = {
     HOME: '/',
     FRIENDS: '/friends',
     AUTH: '/auth',
+    PROFILE: '/profile'
 };
 
 export const PATHS = {

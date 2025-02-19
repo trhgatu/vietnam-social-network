@@ -1,7 +1,11 @@
-import { NewFeeds } from "@/app/(main)/home/components/new-feed";
+import { NewFeeds } from "@/app/(main)/home/components/news-feed";
+import { PostForm } from "@/app/(main)/home/components/post-form";
 export function HomePage() {
 
     return (
-        <NewFeeds/>
+        <div>
+            <PostForm />
+            <NewFeeds />
+        </div>
     );
 }

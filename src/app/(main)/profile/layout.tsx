@@ -1,8 +1,8 @@
 import { LayoutProps } from "@/models/common";
-import { AdminLayout } from "@/shared/layouts";
+import { ProfileLayout } from "@/shared/layouts/profile";
 
 export default function Layout({children}: LayoutProps) {
   return (
-    <AdminLayout>{children}</AdminLayout>
+    <ProfileLayout>{children}</ProfileLayout>
   )
 }

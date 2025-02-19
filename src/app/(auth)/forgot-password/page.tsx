@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import instance from "@/api-client/axios-client";
 import { useToast } from "@/hooks/use-toast";
 
+import { BadgeHelp } from "lucide-react";
+
 export default function ForgotPassword() {
     const { toast } = useToast();
     const [email, setEmail] = useState("");
@@ -45,10 +47,13 @@ export default function ForgotPassword() {
 
     return (
         <div className="flex-1 flex items-center justify-center">
-            <Card>
+            <Card className="w-96">
                 <CardHeader>
                     <CardTitle>
-                        <h2 className="text-2xl font-bold text-center">Forgot Password?</h2>
+                        <div className="flex flex-col items-center">
+                            <span><BadgeHelp /></span>
+                            <h2 className="text-2xl font-bold text-center">Forgot Password?</h2>
+                        </div>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -69,13 +74,17 @@ export default function ForgotPassword() {
                             className="w-full bg-red-600 text-white hover:bg-red-700"
                             disabled={loading}
                         >
-                            Reset Password
+                            Send OTP
                         </Button>
                     </form>
                     <p className="mt-6 text-center text-gray-700 text-sm">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex justify-between">
+                        <div className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-sm transition-all duration-200">
                             <MoveLeft className="text-red-600" />
                             <Link href="/sign-in" className="text-red-600 font-medium">Back to Sign-in</Link>
+                        </div>
+                        <div>
+                        </div>
                         </div>
                     </p>
                 </CardContent>
