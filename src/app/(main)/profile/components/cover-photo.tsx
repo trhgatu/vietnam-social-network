@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function CoverPhoto() {
   return (
-    <div className="w-full h-60 sm:h-72 bg-gray-300 relative">
+    <div className="w-full h-60 sm:h-72 relative">
       <Image
-        src="/assets/profile-cover.jpg"
+        src="https://picsum.photos/200"
         alt="Cover"
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{objectFit: "cover"}}
         priority
       />
     </div>

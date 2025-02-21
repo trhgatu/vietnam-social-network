@@ -5,6 +5,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
@@ -20,32 +21,29 @@ const stories = [
 
 export function StoryCarousel() {
     return (
-        <div className="relative w-full max-w-md md:max-w-lg lg:max-w-2xl mb-4">
+        <div className="relative mb-4">
             <Carousel opts={{ align: "start" }} className="relative">
                 <CarouselContent>
                     {stories.map((story) => (
-                        <CarouselItem key={story.id} className="md:basis-1/4 lg:basis-1/5">
+                        <CarouselItem key={story.id} className="ml-3 p-0 basis-1/3 md:basis-1/4 lg:basis-1/5">
                             <div className="p-1">
                                 <Card className="relative group overflow-hidden rounded-xl">
                                     <CardContent className="p-0">
-                                        {/* Hình nền Story */}
                                         <Image
                                             src={story.story}
                                             alt={story.name}
                                             width={120}
                                             height={200}
-                                            className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                                            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
+
                                         <div className="absolute top-2 left-2">
-                                            <Image
-                                                src={story.avatar}
-                                                alt={story.name}
-                                                width={40}
-                                                height={40}
-                                                className="w-10 h-10 rounded-full border-2 border-white"
-                                            />
+                                            <Avatar>
+                                                <AvatarImage src={story.avatar}>
+                                                </AvatarImage>
+                                                <AvatarFallback>{story.name}</AvatarFallback>
+                                            </Avatar>
                                         </div>
-                                        {/* Tên người đăng */}
                                         <div className="absolute bottom-2 left-2 text-white text-sm font-semibold">
                                             {story.name}
                                         </div>
@@ -55,8 +53,8 @@ export function StoryCarousel() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white" />
-                <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white" />
+                <CarouselPrevious className="sm:block hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white" />
+                <CarouselNext className="sm:block hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white" />
             </Carousel>
         </div>
     );

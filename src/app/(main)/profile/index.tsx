@@ -21,7 +21,7 @@ export function ProfilePage() {
   const [activeTab, setActiveTab] = useState(TABS.POSTS);
 
   return (
-    <div className="max-w-4xl mt-10 mx-auto">
+    <div className="max-w-4xl mx-auto">
       <CoverPhoto />
       <ProfileHeader />
       <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />

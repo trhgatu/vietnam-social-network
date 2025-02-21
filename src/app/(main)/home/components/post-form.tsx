@@ -1,9 +1,8 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Divider } from 'antd';
-import Image from 'next/image';
 import Link from 'next/link';
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RadioTower, FileImage, Laugh } from 'lucide-react';
 export function PostForm() {
     return (
@@ -12,14 +11,11 @@ export function PostForm() {
                 <CardHeader className='p-4'>
                     <CardTitle>
                         <div className='flex items-center'>
-                            <Image
-                                src="https://avatar.iran.liara.run/public"
-                                alt="Post image"
-                                width={48}
-                                height={48}
-                                style={{ objectFit: "cover" }}
-                                className="rounded-full"
-                            />
+                            <Avatar>
+                                <AvatarImage src='https://avatar.iran.liara.run/public'>
+                                </AvatarImage>
+                                <AvatarFallback>Anh Tu</AvatarFallback>
+                            </Avatar>
                             <Input className='ml-2' placeholder='Bạn đang cảm thấy thế nào?' />
                         </div>
                     </CardTitle>

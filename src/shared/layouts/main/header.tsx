@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 
-import { Search, Bell, MessageSquare, User } from "lucide-react";
+import { Bell, MessageSquare, User } from "lucide-react";
 import { useAuth } from "@/shared/contexts/auth-context";
 import { ModeToggle } from "@/components/toggle-theme";
 
@@ -43,14 +43,6 @@ export function Header() {
     <header className="h-[60px] fixed top-0 left-0 right-0 w-full border-b border-b-[#D9D9D9] dark:border-b-[#333333] dark:bg-black bg-white z-50 flex items-center">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="px-4 py-1 rounded-full bg-gray-100 dark:bg-gray-800 focus:outline-hidden pl-10"
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
-          </div>
         </div>
         <div className="flex items-center space-x-4">
           <ModeToggle/>

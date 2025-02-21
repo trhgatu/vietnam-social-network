@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button'
 import { ThumbsUp, MessageCircle, Share2 } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const posts = [
     {
@@ -27,7 +28,7 @@ const posts = [
     },
 ];
 
-export function NewFeeds() {
+export function NewsFeed() {
     return (
         <div>
             {posts.map((post) => (
@@ -35,7 +36,12 @@ export function NewFeeds() {
                     <CardHeader>
                         <CardTitle>
                             <div className="flex items-center gap-3">
-                                <Image src={post.avatar} alt={post.user} width={40} height={40} className="w-10 h-10 rounded-full" />
+                                <Avatar>
+                                    <AvatarImage src={post.avatar}>
+
+                                    </AvatarImage>
+                                    <AvatarFallback>{post.user}</AvatarFallback>
+                                </Avatar>
                                 <span className="font-semibold">{post.user}</span>
                             </div>
                         </CardTitle>

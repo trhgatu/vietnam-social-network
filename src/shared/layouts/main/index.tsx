@@ -10,7 +10,7 @@ export function MainLayout({ children }: LayoutProps) {
       <Header />
       <div className="flex flex-1 flex-col lg:flex-row">
         <Sidebar className="lg:w-1/5 lg:block hidden" />
-        <main className="flex-1 ml-0 lg:ml-[25%] mr-0 lg:mr-[25%] overflow-y-auto px-4 mt-20">
+        <main className="flex-1 ml-0 lg:ml-[20%] mr-0 lg:mr-[20%] overflow-y-auto mt-[60px]">
           {children}
         </main>
         <RightSidebar className="lg:w-1/5 lg:block hidden" />
