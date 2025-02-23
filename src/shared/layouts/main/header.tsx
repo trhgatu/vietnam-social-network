@@ -15,6 +15,7 @@ import {
 import { Bell, MessageSquare, User } from "lucide-react";
 import { useAuth } from "@/shared/contexts/auth-context";
 import { ModeToggle } from "@/components/toggle-theme";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const messages = [
   {
@@ -45,7 +46,7 @@ export function Header() {
         <div className="flex items-center space-x-3">
         </div>
         <div className="flex items-center space-x-4">
-          <ModeToggle/>
+          <ModeToggle />
           <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full">
             <Bell className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
@@ -88,24 +89,16 @@ export function Header() {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64 mr-10">
-              <DropdownMenuLabel className="flex items-center space-x-3 p-3">
-                <Image
-                  src="https://avatar.iran.liara.run/public/girl"
-                  alt="User Avatar"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  priority
-                />
-                <div>
-                  <span className="font-medium">{user?.name}</span>
-                  <p className="text-sm text-gray-500">{user?.email}</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href="/profile" className="flex w-full">Hồ sơ cá nhân</Link>
+                <Link href="/profile" className="flex items-center space-x-3 p-2">
+                  <Avatar>
+                    <AvatarImage src="https://avatar.iran.liara.run/public/girl"></AvatarImage>
+                    <AvatarFallback></AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium">{user?.name}</span>
+                </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Link href="/settings" className="flex w-full">Cài đặt</Link>
               </DropdownMenuItem>
