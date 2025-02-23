@@ -1,7 +1,8 @@
 'use client'
-import Image from 'next/image';
+
 import Link from 'next/link';
-import { Home, User } from 'lucide-react';
+import { Home, Users } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Tooltip,
   TooltipContent,
@@ -9,28 +10,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/shared/contexts/auth-context';
 
-interface SidebarProps{
-  className?:string
+interface SidebarProps {
+  className?: string
 }
 export function Sidebar({ className }: SidebarProps) {
+  const { user } = useAuth();
   const pathname = usePathname();
 
   return (
     <div className={`${className} fixed top-[60px] left-0 h-[calc(100vh-64px)] border-r border-r-[#D9D9D9] dark:border-r-[#333333] overflow-y-auto`}>
       <div className='p-6'>
-        <div className="flex justify-center">
-          <Link href="/">
-            <Image
-              src="/assets/logo/logo.svg"
-              alt="Logo"
-              width={40}
-              height={40}
-              className="cursor-pointer"
-              priority
-            />
-          </Link>
-        </div>
         <div className="mt-6 space-y-6">
           <Link
             href="/home"
@@ -58,12 +49,34 @@ export function Sidebar({ className }: SidebarProps) {
               <Tooltip>
                 <TooltipTrigger className='cursor-pointer'>
                   <div className="flex items-center">
-                    <User className="h-6 w-6" />
+                    <Users className="h-6 w-6" />
                     <span className="ml-2">Bạn bè</span>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Bạn bè</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Link>
+          <Link
+            href="/profile"
+            className={`hover:transition-all duration-200 mb-1 flex items-center gap-3 p-3 rounded-md ${pathname === "/profile" ? "bg-neutral-200 dark:bg-neutral-700" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              }`}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className='cursor-pointer'>
+                  <div className="flex items-center">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.avatar} alt="User Avatar" />
+                      <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                    <span className="ml-2 font-medium">{user?.name}</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Xem Profile của bạn</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

@@ -1,28 +1,31 @@
-interface Props {
-    activeTab: string;
-    setActiveTab: (tab: string) => void;
-  }
+'use client'
 
-  export default function ProfileTabs({ activeTab, setActiveTab }: Props) {
-    const tabs = [
-      { name: "Bài viết", key: "posts" },
-      { name: "Giới thiệu", key: "info" },
-      { name: "Bạn bè", key: "friends" },
-      { name: "Ảnh", key: "photos" },
-      { name: "Video", key: "videos" },
-    ];
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-    return (
-      <div className="flex space-x-4 sm:mt-12 border-b">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            className={`px-4 py-2 ${activeTab === tab.key ? "border-b-2 border-blue-500 font-bold" : "text-gray-500"}`}
-            onClick={() => setActiveTab(tab.key)}
-          >
-            {tab.name}
-          </button>
-        ))}
-      </div>
-    );
-  }
+const TABS = [
+  { label: "Bài viết", href: "/profile/posts" },
+  { label: "Giới thiệu", href: "/profile/about" },
+  { label: "Bạn bè", href: "/profile/friends" },
+  { label: "Ảnh", href: "/profile/photos" },
+];
+
+export default function ProfileTabs() {
+  const pathname = usePathname();
+
+  return (
+    <div className="flex gap-4 border-b pb-2 mt-6">
+      {TABS.map(({ label, href }) => (
+        <Link
+          key={href}
+          href={href}
+          className={`px-4 py-2 rounded-md ${
+            pathname === href ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+        >
+          {label}
+        </Link>
+      ))}
+    </div>
+  );
+}

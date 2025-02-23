@@ -1,7 +1,7 @@
 import { FriendsPage } from '.';
 
 export const metadata = {
-    title: 'VS - Home',
+    title: 'VS - Bạn bè',
 };
 
 function FriendsPageRoute() {

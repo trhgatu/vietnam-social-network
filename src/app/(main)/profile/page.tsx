@@ -1,7 +1,7 @@
 import { ProfilePage } from '.';
 
 export const metadata = {
-    title: 'VS - Profile',
+    title: 'VS - Trang cá nhân',
 };
 
 function ProfilePageRoute() {

@@ -127,25 +127,25 @@ export function PostForm() {
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center flex-1 gap-2 sm:gap-6">
                             <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <span>Ảnh</span>
+                                <p>Ảnh</p>
                                 <FileImage className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <span>Cảm xúc</span>
+                                <p>Cảm xúc</p>
                                 <Laugh className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <span>Gắn thẻ</span>
+                                <p>Gắn thẻ</p>
                                 <Tag className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                         </div>
                         <div className="flex items-center text-sm sm:text-base">
-                            <span>Đối tượng:</span>
+                            <p>Đối tượng:</p>
                             <DropdownMenu modal={false}>
                                 <DropdownMenuTrigger>
-                                    <div className="flex items-center ml-2 py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer transition-all duration-200">
+                                    <div className="flex items-center ml-1 py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer transition-all duration-200">
                                         {selectedAudience.icon}
-                                        <span className="ml-1">{selectedAudience.name}</span>
+                                        <p className="ml-1">{selectedAudience.name}</p>
                                     </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>

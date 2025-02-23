@@ -1,15 +1,22 @@
+import { User } from "@/shared/types/user";
 import Image from "next/image";
 
-export default function CoverPhoto() {
+interface CoverPhotoProps {
+  user: User | null;
+}
+
+export default function CoverPhoto({ user }: CoverPhotoProps) {
   return (
-    <div className="w-full h-60 sm:h-72 relative">
-      <Image
-        src="https://picsum.photos/200"
-        alt="Cover"
-        fill
-        style={{objectFit: "cover"}}
-        priority
-      />
+    <div className="relative w-full h-64 bg-gray-300">
+      {user?.coverPhoto && (
+        <Image
+          src={user.coverPhoto}
+          alt="Cover"
+          fill
+          style={{ objectFit: "cover" }}
+          priority
+        />
+      )}
     </div>
   );
 }
