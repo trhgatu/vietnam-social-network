@@ -11,12 +11,12 @@ const TABS: Record<string, React.FC> = {
   photos: ProfilePhotos,
 };
 
-export default async function ProfileTabPage({ params }: { params: Promise<{ tab?: string }> }) {
-  const { tab } = await params; // Đợi params được resolved
+export default async function ProfileTabPage({ params }: { params: { tab: string } }) {
+  const { tab } = await params;
 
-  if (!tab) return notFound();
+  if (!tab || !TABS[tab]) return notFound();
 
-  const TabComponent = TABS[tab] || ProfilePosts;
+  const TabComponent = TABS[tab];
 
   return (
     <div>

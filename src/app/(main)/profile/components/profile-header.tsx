@@ -28,7 +28,6 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
 
       <div className="mt-4 sm:mt-18 sm:ml-4">
         <h1 className="text-xl sm:text-2xl font-bold">{user?.name} <span>({user?.nickname})</span></h1>
-        <p className="text-gray-500 text-sm sm:text-base">Lập trình viên & Nhà sáng tạo nội dung</p>
       </div>
     </div>
   );

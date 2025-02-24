@@ -1,8 +1,10 @@
+// src/shared/contexts/auth-context.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@/shared/types/user";
+import instance from "@/api-client/axios-client";
 
 interface AuthContextType {
   user: User | null;
@@ -17,11 +19,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const fetchUser = async () => {
+      try {
+        const res = await instance.get("/auth/me");
+        if (res.data) {
+          setUser(res.data.user);
+        }
+      } catch (error) {
+        console.log("Not authenticated", error);
+      }
+    };
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    fetchUser();
   }, []);
 
   const login = (userData: User) => {
