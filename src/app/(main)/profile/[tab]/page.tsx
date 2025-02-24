@@ -11,7 +11,7 @@ const TABS: Record<string, React.FC> = {
   photos: ProfilePhotos,
 };
 
-export default async function ProfileTabPage({ params }: { params: { tab: string } }) {
+export default async function ProfileTabPage({ params }: { params: Promise<{ tab: string }> }) {
   const { tab } = await params;
 
   if (!tab || !TABS[tab]) return notFound();
