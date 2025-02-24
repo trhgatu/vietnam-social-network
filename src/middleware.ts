@@ -5,8 +5,13 @@ const privatePaths = ['/profile', '/home']
 const authPaths = ['/sign-in', '/sign-up', '/forgot-password']
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const sessionToken = request.cookies.get('sessionToken')?.value
+  const { pathname } = request.nextUrl;
+  const cookieHeader = request.headers.get("cookie") || "";
+  const sessionToken = cookieHeader
+    .split("; ")
+    .find((row) => row.startsWith("sessionToken="))
+    ?.split("=")[1];
+
 
   if (privatePaths.some((path) => pathname.startsWith(path)) && !sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', request.url))
@@ -19,6 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  runtime: 'nodejs',
   matcher: ['/home', '/profile/:path*', '/sign-in', '/sign-up'/* ,'/forgot-password' */]
 }
