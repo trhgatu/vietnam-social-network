@@ -1,3 +1,4 @@
+// src/shared/contexts/auth-context.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect } from "react";
@@ -7,7 +8,6 @@ import instance from "@/api-client/axios-client";
 
 interface AuthContextType {
   user: User | null;
-  isLoading: boolean;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -16,20 +16,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-
     const fetchUser = async () => {
-      if (!document.cookie.includes("sessionToken")) {
-        setIsLoading(false);
-        return;
-      }
       try {
         const res = await instance.get("/auth/me");
         if (res.data) {
@@ -37,8 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (error) {
         console.log("Not authenticated", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -57,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
