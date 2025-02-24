@@ -6,11 +6,7 @@ const authPaths = ['/sign-in', '/sign-up', '/forgot-password']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  console.log("Middleware running...");
-  console.log("Cookies received:", request.cookies.getAll());
-
-  const sessionToken = request.cookies.get("sessionToken")?.value;
-  console.log("sessionToken in middleware:", sessionToken);
+  const sessionToken = request.cookies.get('sessionToken')?.value
 
   if (privatePaths.some((path) => pathname.startsWith(path)) && !sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', request.url))
@@ -23,5 +19,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
+  runtime: 'nodejs',
   matcher: ['/home', '/profile/:path*', '/sign-in', '/sign-up'/* ,'/forgot-password' */]
 }
