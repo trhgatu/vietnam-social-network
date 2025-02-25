@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { Home, Users } from 'lucide-react';
+import { Home, Users, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Tooltip,
@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/shared/contexts/auth-context';
 
@@ -16,7 +17,7 @@ interface SidebarProps {
   className?: string
 }
 export function Sidebar({ className }: SidebarProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -70,7 +71,7 @@ export function Sidebar({ className }: SidebarProps) {
                   <div className="flex items-center">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={user?.avatar} alt="User Avatar" />
-                      <AvatarFallback>U</AvatarFallback>
+                      <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
                     <span className="ml-2 font-medium">{user?.name}</span>
                   </div>
@@ -81,6 +82,15 @@ export function Sidebar({ className }: SidebarProps) {
               </Tooltip>
             </TooltipProvider>
           </Link>
+          <div className="p-6">
+            <Button
+              onClick={logout}
+              className="w-full flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white"
+            >
+              <LogOut className="h-5 w-5" />
+              Đăng xuất
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-/* import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 const privatePaths = ['/profile', '/home']
@@ -26,4 +26,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/home', '/profile/:path*', '/sign-in', '/sign-up']
 }
- */
