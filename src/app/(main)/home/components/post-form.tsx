@@ -140,7 +140,6 @@ export function PostForm() {
                             </div>
                         </div>
                         <div className="flex items-center text-sm sm:text-base">
-                            <p>Đối tượng:</p>
                             <DropdownMenu modal={false}>
                                 <DropdownMenuTrigger>
                                     <div className="flex items-center ml-1 py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer transition-all duration-200">

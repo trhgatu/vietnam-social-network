@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { Home, Users, LogOut } from 'lucide-react';
+import { Home, Users, MessageCircleMore } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Tooltip,
@@ -9,7 +9,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/shared/contexts/auth-context';
 
@@ -17,7 +16,7 @@ interface SidebarProps {
   className?: string
 }
 export function Sidebar({ className }: SidebarProps) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -32,7 +31,7 @@ export function Sidebar({ className }: SidebarProps) {
               <Tooltip>
                 <TooltipTrigger className='cursor-pointer'>
                   <div className="flex items-center">
-                    <Home className="h-6 w-6" />
+                    <Home className={`h-6 w-6 ${pathname === "/home" ? "text-red-500 dark:bg-neutral-700" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"}`} />
                     <span className="ml-2">Trang chủ</span>
                   </div>
                 </TooltipTrigger>
@@ -61,7 +60,25 @@ export function Sidebar({ className }: SidebarProps) {
             </TooltipProvider>
           </Link>
           <Link
-            href="/profile"
+            href="/messages"
+            className={`hover:transition-all duration-200 mb-1 flex items-center gap-3 p-3 rounded-md ${pathname === "/messages" ? "bg-neutral-200 dark:bg-neutral-700" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"}`}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className='cursor-pointer'>
+                  <div className="flex items-center">
+                    <MessageCircleMore className="h-6 w-6" />
+                    <span className="ml-2">Tin nhắn</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Tin nhắn</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Link>
+          <Link
+            href={`/${user?.username}/timeline`}
             className={`hover:transition-all duration-200 mb-1 flex items-center gap-3 p-3 rounded-md ${pathname === "/profile" ? "bg-neutral-200 dark:bg-neutral-700" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"
               }`}
           >
@@ -82,15 +99,7 @@ export function Sidebar({ className }: SidebarProps) {
               </Tooltip>
             </TooltipProvider>
           </Link>
-          <div className="p-6">
-            <Button
-              onClick={logout}
-              className="w-full flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white"
-            >
-              <LogOut className="h-5 w-5" />
-              Đăng xuất
-            </Button>
-          </div>
+
         </div>
       </div>
     </div>

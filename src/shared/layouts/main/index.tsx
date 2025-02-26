@@ -13,7 +13,7 @@ export function MainLayout({ children }: LayoutProps) {
         <main className="flex-1 ml-0 lg:ml-[20%] mr-0 lg:mr-[20%] overflow-y-auto mt-[60px]">
           {children}
         </main>
-        <RightSidebar className="lg:w-1/5 lg:block hidden" />
+        {/* <RightSidebar className="lg:w-1/5 lg:block hidden" /> */}
       </div>
     </div>
   );

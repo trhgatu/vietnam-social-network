@@ -40,14 +40,17 @@ export function Header() {
         <div className="flex items-center space-x-3">
           <div className="flex justify-center">
             <Link href="/">
-              <Image
-                src="/assets/logo/logo.svg"
-                alt="Logo"
-                width={40}
-                height={40}
-                className="cursor-pointer"
-                priority
-              />
+              <div className="flex items-center">
+                <Image
+                  src="/assets/logo/logo.svg"
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  priority
+                />
+                <span className="ml-2 text-xl font-bold">Vietnam Social.</span>
+              </div>
             </Link>
           </div>
         </div>

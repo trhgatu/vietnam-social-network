@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
-import ProfilePosts from "@/app/(main)/profile/components/profile-posts";
-import ProfileInfo from "@/app/(main)/profile/components/profile-info";
-import ProfileFriends from "@/app/(main)/profile/components/profile-friends";
-import ProfilePhotos from "@/app/(main)/profile/components/profile-photos";
+import ProfilePosts from "@/app/(main)/[username]/components/profile-posts";
+import ProfileInfo from "@/app/(main)/[username]/components/profile-info";
+import ProfileFriends from "@/app/(main)/[username]/components/profile-friends";
+import ProfilePhotos from "@/app/(main)/[username]/components/profile-photos";
+import { TimelinePage } from "@/app/(main)/[username]";
 
 const TABS: Record<string, React.FC> = {
+  timeline: TimelinePage,
   posts: ProfilePosts,
   about: ProfileInfo,
   friends: ProfileFriends,

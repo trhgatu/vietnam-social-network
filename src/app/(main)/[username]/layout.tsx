@@ -11,7 +11,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
     <div className="max-w-4xl mx-auto">
       <CoverPhoto user={user} />
       <ProfileHeader user={user} />
-      <ProfileTabs/>
+      <ProfileTabs user={user}/>
       <div className="mt-4">{children}</div>
     </div>
   );
