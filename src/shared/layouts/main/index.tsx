@@ -2,7 +2,7 @@
 import { Header } from './header';
 import { LayoutProps } from '@/models/common';
 import { Sidebar } from './sidebar';
-import { RightSidebar } from './right-sidebar';
+/* import { RightSidebar } from './right-sidebar'; */
 
 export function MainLayout({ children }: LayoutProps) {
   return (
