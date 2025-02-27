@@ -24,6 +24,7 @@ interface NavMainProps {
   items: NavItem[]
 }
 import { useAuth } from "@/shared/contexts/auth-context"
+import { Separator } from "@/components/ui/separator"
 export function NavMain({ items }: NavMainProps) {
   const { user } = useAuth();
   const pathname = usePathname()
@@ -53,6 +54,7 @@ export function NavMain({ items }: NavMainProps) {
             </SidebarMenuItem>
           )
         })}
+        <Separator/>
         <SidebarMenuItem>
           <Link href={`/${user.username}/timeline`}>
             <SidebarMenuButton

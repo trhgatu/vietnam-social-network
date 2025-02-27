@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Divider } from 'antd';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/shared/contexts/auth-context';
 
@@ -77,6 +78,7 @@ export function Sidebar({ className }: SidebarProps) {
               </Tooltip>
             </TooltipProvider>
           </Link>
+          <Divider/>
           <Link
             href={`/${user?.username}/timeline`}
             className={`hover:transition-all duration-200 mb-1 flex items-center gap-3 p-3 rounded-md ${pathname === "/profile" ? "bg-neutral-200 dark:bg-neutral-700" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"

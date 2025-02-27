@@ -7,8 +7,6 @@ interface ProfileTabsProps {
   user: User | null;
 }
 
-
-
 export default function ProfileTabs({ user }: ProfileTabsProps) {
   const pathname = usePathname();
 
