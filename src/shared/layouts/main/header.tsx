@@ -86,7 +86,9 @@ export function Header() {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-center justify-center">
-                Xem tất cả
+                <Link href="/messages">
+                  Xem tất cả
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
