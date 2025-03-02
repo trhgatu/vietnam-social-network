@@ -15,16 +15,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "avatar.iran.liara.run",
-        pathname: "/public/**"
+        hostname: "**",
       },
-      {
-        protocol: "https",
-        hostname : "picsum.photos",
-        pathname: "/200/**"
-      }
-    ]
-  }
+    ],
+    domains: ["example.com", "picsum.photos", "your-api-domain.com"],
+  },
 };
 
 export default nextConfig;

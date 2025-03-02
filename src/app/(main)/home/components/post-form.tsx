@@ -1,5 +1,6 @@
 'use client'
 
+import instance from "@/api-client/axios-client";
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Divider } from "antd";
@@ -21,7 +22,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { useToast } from "@/hooks/use-toast";
 const audiences = [
     {
         id: 1,
@@ -44,7 +45,39 @@ const audiences = [
 ];
 
 export function PostForm() {
+    const { toast } = useToast();
+    const [content, setContent] = useState("");
+    const [loading, setLoading] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState(audiences[0]);
+
+    const handleCreatePost = async () => {
+        if (!content.trim()) return;
+
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            const response = await instance.post(
+                "/posts/create",
+                { content },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            if (response.data.success) {
+                toast({
+                    description: `${response.data.message}`
+                });
+                setContent("");
+            } else {
+                toast({ description: response.data.message, variant: "destructive" });
+            }
+        } catch (error) {
+            console.log(error);
+            toast({ description: "Đã có lỗi xảy ra!", variant: "destructive" });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="mb-4">
@@ -113,9 +146,15 @@ export function PostForm() {
                                     <Textarea
                                         className="w-full resize-none bg-transparent border-none focus:ring-0 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base"
                                         placeholder="Bạn đang nghĩ gì, Tú?"
+                                        value={content}
+                                        onChange={(e) => setContent(e.target.value)}
                                     />
-                                    <Button className="w-full mt-3 rounded-lg py-2 text-sm sm:text-base">
-                                        Đăng
+                                    <Button
+                                        className="w-full mt-3 rounded-lg py-2 text-sm sm:text-base"
+                                        onClick={handleCreatePost}
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Đang đăng..." : "Đăng"}
                                     </Button>
                                 </DialogContent>
                             </Dialog>

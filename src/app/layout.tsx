@@ -1,9 +1,9 @@
-import { Lato } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/shared/contexts/auth-context";
-
-const lato = Lato({
+import { Toaster } from "@/components/ui/toaster";
+const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
 });
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${lato.className} antialiased`}
+        className={`${roboto.className} font-medium antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -26,6 +26,7 @@ export default function RootLayout({
         >
           <AuthProvider>
             {children}
+            <Toaster/>
           </AuthProvider>
         </ThemeProvider>
       </body>

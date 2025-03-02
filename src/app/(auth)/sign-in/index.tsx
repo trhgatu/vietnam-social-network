@@ -31,7 +31,7 @@ export function SignInPage() {
     try {
       const response = await instance.post("/auth/login", { email, password });
       if (response.data.success) {
-        login(response.data.user)
+        login(response.data.token)
         toast({
           description: `${response?.data.message}`
         })

@@ -48,6 +48,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
+    setUser(null);
+    localStorage.removeItem("token");
+
     try {
       await instance.post("/auth/logout", {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -55,11 +58,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.log("Logout failed", error);
     } finally {
-      localStorage.removeItem("token");
-      setUser(null);
-      window.location.href = "/sign-in";
+      router.push("/sign-in");
     }
   };
+
+
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
