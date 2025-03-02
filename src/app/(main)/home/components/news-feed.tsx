@@ -13,6 +13,7 @@ import {
     CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Divider } from "antd";
 import { ThumbsUp, MessageCircle, Share2, Bot } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Post } from "@/shared/types/post";
@@ -51,14 +52,18 @@ export function NewsFeed() {
                                         <div>
                                             <span className="flex items-center gap-2">
                                                 {post.authorId?.username || "AI Assistant"}
-                                                {post.isAI && <Bot size={16} className="text-blue-500" />}
+                                                {post.isAI && <Bot className="text-blue-600" />}
                                             </span>
-                                            <p className="text-sm text-gray-500">{timeAgo}</p>
+                                            <p className="text-sm font-medium">{timeAgo}</p>
                                         </div>
                                     </div>
                                 </CardTitle>
                                 <CardDescription>
-                                    <MarkdownRenderer content={post.content}></MarkdownRenderer>
+                                    <div className="text-black text-base dark:text-slate-100">
+                                        <MarkdownRenderer content={post.content}>
+
+                                        </MarkdownRenderer>
+                                    </div>
                                 </CardDescription>
                             </CardHeader>
 
@@ -75,8 +80,9 @@ export function NewsFeed() {
                                     </div>
                                 </CardContent>
                             )}
+                            <Divider className="!mb-2 !mt-0 !dark:text-gray-400" />
+                            <CardFooter className="pb-4 flex justify-between">
 
-                            <CardFooter className="flex justify-between">
                                 <Button variant="ghost" className="flex items-center gap-2">
                                     <ThumbsUp size={20} /> Like
                                 </Button>

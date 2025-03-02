@@ -1,6 +1,7 @@
 'use client'
 
 import instance from "@/api-client/axios-client";
+import { useSWRConfig } from "swr";
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Divider } from "antd";
@@ -23,6 +24,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { Spinner } from "@heroui/spinner"
 const audiences = [
     {
         id: 1,
@@ -46,10 +48,11 @@ const audiences = [
 
 export function PostForm() {
     const { toast } = useToast();
+    const { mutate } = useSWRConfig();
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState(audiences[0]);
-
+    const [isOpen, setIsOpen] = useState(false);
     const handleCreatePost = async () => {
         if (!content.trim()) return;
 
@@ -68,6 +71,8 @@ export function PostForm() {
                     description: `${response.data.message}`
                 });
                 setContent("");
+                setIsOpen(false);
+                mutate('/posts');
             } else {
                 toast({ description: response.data.message, variant: "destructive" });
             }
@@ -78,6 +83,7 @@ export function PostForm() {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="mb-4">
@@ -90,7 +96,7 @@ export function PostForm() {
                                 <AvatarFallback>Anh Tu</AvatarFallback>
                             </Avatar>
 
-                            <Dialog>
+                            <Dialog open={isOpen} onOpenChange={setIsOpen}>
                                 <DialogTrigger className="flex-1">
                                     <div className="flex-1 ml-2 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 cursor-pointer transition-all duration-200 rounded-full p-2">
                                         <span className="font-medium text-gray-700 dark:text-gray-200 text-sm sm:text-base">
@@ -152,9 +158,9 @@ export function PostForm() {
                                     <Button
                                         className="w-full mt-3 rounded-lg py-2 text-sm sm:text-base"
                                         onClick={handleCreatePost}
-                                        disabled={loading}
+
                                     >
-                                        {loading ? "Đang đăng..." : "Đăng"}
+                                        {loading ? <Spinner color="default" /> : "Đăng"}
                                     </Button>
                                 </DialogContent>
                             </Dialog>

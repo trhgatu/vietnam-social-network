@@ -5,6 +5,7 @@ import {
   Home,
   Users,
   MessageSquareText,
+  Bell,
 } from "lucide-react"
 
 import { NavMain } from "@/shared/layouts/main/nav-main"
@@ -18,22 +19,28 @@ import {
 const data = {
   navMain: [
     {
-      title: "Home",
+      title: "Trang chủ",
       url: "/home",
       icon: Home,
       isActive: true,
       items: [],
     },
     {
-      title: "Friends",
+      title: "Bạn bè",
       url: "/friends",
       icon: Users,
       items: [],
     },
     {
-      title: "Messages",
+      title: "Tin nhắn",
       url: "/messages",
       icon: MessageSquareText,
+      items: [],
+    },
+    {
+      title: "Thông báo",
+      url: "/notifications",
+      icon: Bell,
       items: [],
     },
   ],
