@@ -11,36 +11,47 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isRedirecting, setIsRedirecting] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
     const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
 
+    // Load user từ token khi app khởi động
     useEffect(() => {
         const initializeUser = async () => {
             setLoading(true);
             const token = localStorage.getItem("token");
+
             if (token) {
                 const data = await fetchUser();
-                setUser(data?.user ?? null);
+                if (data?.user) {
+                    setUser(data.user);
+                }
             }
             setLoading(false);
         };
+
         initializeUser();
     }, []);
 
-
+    // Xử lý điều hướng khi user thay đổi
     useEffect(() => {
-        if (!loading) {
-            if (!user && !publicRoutes.includes(pathname)) {
-                router.push("/sign-in");
-            }
+        if (loading || isRedirecting) return;
 
-            if (user && publicRoutes.includes(pathname)) {
-                router.push("/home");
-            }
+        if (!user && !publicRoutes.includes(pathname)) {
+            setIsRedirecting(true);
+            router.push("/sign-in");
+            setTimeout(() => setIsRedirecting(false), 500); // Tránh redirect liên tục
         }
-    }, [user, pathname, router, loading, publicRoutes]);
+
+        if (user && publicRoutes.includes(pathname)) {
+            setIsRedirecting(true);
+            router.push("/home");
+            setTimeout(() => setIsRedirecting(false), 500);
+        }
+    }, [user, pathname, router, loading, isRedirecting]);
+
 
     const login = async (token: string): Promise<void> => {
         const data = await loginUser(token);
@@ -56,10 +67,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         router.push("/sign-in");
     };
 
-    if (loading || (!user && !publicRoutes.includes(pathname))) {
+    if (loading || isRedirecting) {
         return <LoadingPage />;
     }
-
 
     return (
         <AuthContext.Provider value={{ user, login, logout, loading }}>
