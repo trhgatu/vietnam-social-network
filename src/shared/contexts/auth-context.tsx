@@ -6,6 +6,7 @@ import { fetchUser, loginUser, logoutUser } from "@/api-client/auth-api";
 import { AuthContextType, User } from "@/shared/types";
 import LoadingPage from "@/shared/components/loading-page/loading-page";
 
+const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -15,9 +16,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
 
-    // Load user từ token khi app khởi động
+
     useEffect(() => {
         const initializeUser = async () => {
             setLoading(true);
@@ -35,14 +35,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         initializeUser();
     }, []);
 
-    // Xử lý điều hướng khi user thay đổi
     useEffect(() => {
         if (loading || isRedirecting) return;
 
         if (!user && !publicRoutes.includes(pathname)) {
             setIsRedirecting(true);
             router.push("/sign-in");
-            setTimeout(() => setIsRedirecting(false), 500); // Tránh redirect liên tục
+            setTimeout(() => setIsRedirecting(false), 500);
         }
 
         if (user && publicRoutes.includes(pathname)) {

@@ -29,9 +29,8 @@ export default function ProfileTabs({ user }: ProfileTabsProps) {
           <Link
             key={href}
             href={href}
-            className={`px-4 py-2 relative ${
-              isActive ? "border-b-2 border-red-500 font-semibold" : "hover:text-red-500"
-            }`}
+            className={`px-4 py-2 relative ${isActive ? "border-b-2 border-red-500 font-semibold" : "hover:text-red-500"
+              }`}
           >
             {label}
           </Link>
