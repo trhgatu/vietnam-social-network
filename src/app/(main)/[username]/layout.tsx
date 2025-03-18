@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useAuth } from "@/shared/contexts/auth-context";
 import CoverPhoto from "./components/cover-photo";

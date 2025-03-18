@@ -1,0 +1,26 @@
+.loading-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #000;
+    color: #fff;
+  }
+
+  .loading-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    letter-spacing: 2px;
+  }
+
+  .dots {
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+  }

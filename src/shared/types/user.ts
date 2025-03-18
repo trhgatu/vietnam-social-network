@@ -9,4 +9,5 @@ export interface User {
     bio?: string;
     location?: string;
     website?: string;
+    role: "user" | "admin";
   }
