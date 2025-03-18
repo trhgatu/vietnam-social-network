@@ -7,7 +7,7 @@ interface ProfileTabsProps {
   user: User | null;
 }
 
-export default function ProfileTabs({ user }: ProfileTabsProps) {
+export function ProfileTabs({ user }: ProfileTabsProps) {
   const pathname = usePathname();
 
   if (!user) return null;
