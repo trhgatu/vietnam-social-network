@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@/shared/types/user";
 import { SlUser } from "react-icons/sl";
 import Image from "next/image";
@@ -7,28 +9,36 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
+  if (!user) return null;
+
   return (
-    <div className="flex flex-col sm:flex-row items-center px-4 sm:px-6 relative -mt-16 sm:-mt-20 text-center sm:text-left">
-      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-white flex items-center justify-center bg-gray-200">
-        {user?.avatar ? (
+    <div className="px-4 py-6 flex flex-col md:flex-row items-center md:items-end gap-6 max-w-4xl mx-auto relative">
+      <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow -mt-20 md:-mt-16 bg-white">
+        {user.avatar ? (
           <Image
             src={user.avatar}
-            alt="Avatar"
-            width={128}
-            height={128}
-            className="w-full h-full object-cover"
+            alt={`Ảnh đại diện của ${user.name}`}
+            fill
+            className="object-cover"
             priority
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <SlUser className="text-gray-500 text-6xl sm:text-8xl" />
+          <div className="flex items-center justify-center w-full h-full bg-gray-200">
+            <SlUser className="text-5xl text-gray-500" />
           </div>
         )}
       </div>
-
-      <div className="mt-4 sm:mt-18 sm:ml-4">
-        <h1 className="text-xl sm:text-2xl font-bold">{user?.name} <span>({user?.nickname})</span></h1>
-        <span>@{user?.username}</span>
+      <div className="text-center md:text-left flex-1">
+        <h1 className="text-3xl font-bold">{user.name}</h1>
+        {user.nickname && (
+          <h2 className="text-xl text-gray-600">({user.nickname})</h2>
+        )}
+        <p className="text-gray-500 text-sm mt-1">@{user.username}</p>
+      </div>
+      <div className="mt-4 md:mt-0">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition duration-200">
+          Kết bạn
+        </button>
       </div>
     </div>
   );

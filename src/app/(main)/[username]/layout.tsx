@@ -16,24 +16,44 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const getUserData = async () => {
-      setLoading(true);
-      const fetchedUser = await fetchUserByUsername(username as string);
-      setUser(fetchedUser);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const fetchedUser = await fetchUserByUsername(username as string);
+        setUser(fetchedUser);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (username) getUserData();
+    if (username) {
+      getUserData();
+    }
   }, [username]);
 
-  if (loading) return <LoadingPage />;
-  if (!user) return <p className="text-center text-gray-500 mt-6">User not found</p>;
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-xl font-medium rounded-lg shadow">
+          Không tìm thấy người dùng
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className=" min-h-screen pb-8">
       <CoverPhoto user={user} />
       <ProfileHeader user={user} />
       <ProfileTabs user={user} />
-      <div className="mt-4">{children}</div>
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        {children}
+      </div>
     </div>
   );
 }
