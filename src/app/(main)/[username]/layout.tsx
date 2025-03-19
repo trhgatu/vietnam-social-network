@@ -9,7 +9,9 @@ import ProfileHeader from "./components/profile-header";
 import ProfileTabs from "./components/profile-tabs";
 import ProfileSkeleton from "./components/profile-skeleton";
 import { useTranslation } from "react-i18next";
-
+import Image from "next/image";
+import FavoriteSong
+  from "@/app/(main)/[username]/components/favorite-song";
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
   const { username } = useParams();
   const [user, setUser] = useState<User | null>(null);
@@ -22,6 +24,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
         setLoading(true);
         const fetchedUser = await fetchUserByUsername(username as string);
         setUser(fetchedUser);
+        console.log(fetchedUser)
       } catch (error) {
         console.error("Error fetching user:", error);
       } finally {
@@ -51,27 +54,19 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   return (
     <div className="min-h-screen pb-6 sm:pb-10 bg-gray-50 dark:bg-zinc-900">
       <div className="bg-white dark:bg-zinc-950 shadow-sm w-full">
-        {/* Cover and Profile Header */}
         <div className="w-full max-w-7xl mx-auto">
           <CoverPhoto user={user} />
           <ProfileHeader user={user} />
         </div>
-
-        {/* Profile Navigation Tabs */}
         <ProfileTabs user={user} />
       </div>
-
-      {/* Main Content Area - Made more responsive */}
       <div className="w-full max-w-7xl mx-auto mt-4 px-2 sm:px-3 md:px-4 lg:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 md:gap-4">
-          {/* Left Sidebar - Show on medium to large screens */}
           <div className="hidden lg:block lg:col-span-1">
             <div className="sticky top-[120px]">
-              {/* Bio Card */}
               <div className="bg-white dark:bg-zinc-950 rounded-lg shadow p-3 sm:p-4">
                 <h3 className="font-medium text-lg mb-2 sm:mb-3">Giới thiệu</h3>
                 {user.bio && <p className="text-sm mb-2 sm:mb-3">{user.bio}</p>}
-
                 <div className="space-y-2 text-sm">
                   {user.location && (
                     <div className="flex items-center">
@@ -98,8 +93,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                   </div>
                 </div>
               </div>
+              <div>
 
-              {/* Friends Card */}
+
+              </div>
               <div className="bg-white dark:bg-zinc-950 rounded-lg shadow p-3 sm:p-4 mt-3 sm:mt-4">
                 <div className="flex items-center justify-between mb-2 sm:mb-3">
                   <h3 className="font-medium text-lg">Bạn bè</h3>
@@ -158,7 +155,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                 <div className="grid grid-cols-4 gap-1.5">
                   {[1, 2, 3, 4].map((item) => (
                     <div key={item} className="aspect-square rounded-lg bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                      <img
+                      <Image
+                        width={200}
+                        height={200}
                         src={`https://avatar.iran.liara.run/public/${item % 2 === 0 ? 'boy' : 'girl'}?v=${item}`}
                         alt="Friend"
                         className="w-full h-full object-cover"

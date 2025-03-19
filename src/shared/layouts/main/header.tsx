@@ -101,7 +101,7 @@ export function Header() {
               <ModeToggle />
             </div>
             {user ? (
-              <DropdownMenu>
+              <DropdownMenu modal>
                 <DropdownMenuTrigger className="flex items-center gap-2 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-zinc-800">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={user.avatar} alt={user.name} />

@@ -1,5 +1,5 @@
 export interface User {
-    id: string;
+    _id: string;
     name: string;
     username: string;
     nickname?:string;
@@ -10,4 +10,5 @@ export interface User {
     location?: string;
     website?: string;
     role: "user" | "admin";
+    favoriteSong : string;
   }

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { User } from "@/shared/types/user";
-import { Grid, Clock, Bookmark, Users, Star } from "lucide-react";
+import { Grid, Bookmark, Users, Star, Music4, Images } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ProfileTabsProps {
@@ -37,12 +37,18 @@ export default function ProfileTabs({ user }: ProfileTabsProps) {
     {
       name: t('profile.tabs.photos'),
       path: `${basePath}/photos`,
-      icon: <Clock className="w-4 h-4 md:mr-1.5" />
+      icon: <Images className="w-4 h-4 md:mr-1.5" />
+
     },
     {
       name: t('profile.tabs.saved'),
       path: `${basePath}/saved`,
       icon: <Bookmark className="w-4 h-4 md:mr-1.5" />
+    },
+    {
+      name: t('profile.tabs.music'),
+      path: `${basePath}/music`,
+      icon: <Music4 className="w-4 h-4 md:mr-1.5" />
     },
   ];
 

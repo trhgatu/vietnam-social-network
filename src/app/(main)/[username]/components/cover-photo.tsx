@@ -14,7 +14,7 @@ export default function CoverPhoto({ user }: CoverPhotoProps) {
   if (!user) return null;
 
   // Check if this is the current user's profile
-  const isOwnProfile = currentUser?.id === user.id;
+  const isOwnProfile = currentUser?._id === user._id;
 
   return (
     <div className="relative group">

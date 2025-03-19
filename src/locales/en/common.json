@@ -46,7 +46,8 @@
         "about": "About",
         "friends": "Friends",
         "photos": "Photos",
-        "saved" : "Saved"
+        "saved" : "Saved",
+        "music" : "Music"
       }
     },
     "post": {

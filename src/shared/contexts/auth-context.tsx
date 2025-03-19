@@ -40,22 +40,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const storedToken = getToken();
 
         if (storedToken) {
-          // Set the token in axios headers first
           setAuthToken(storedToken);
           setTokenState(storedToken);
-
-          // Then try to refresh or fetch user data
           const response = await refreshToken();
 
           if (response && response.user) {
             setUser(response.user);
           } else {
-            // If refresh fails, try to fetch user directly
             const userData = await loginUser(storedToken);
             if (userData && userData.user) {
               setUser(userData.user);
             } else {
-              // If all fails, clear token
               localStorage.removeItem('token');
               setAuthToken(null);
               setTokenState(null);
@@ -64,7 +59,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
-        // On error, clear any potentially invalid tokens
         localStorage.removeItem('token');
         setAuthToken(null);
         setTokenState(null);
