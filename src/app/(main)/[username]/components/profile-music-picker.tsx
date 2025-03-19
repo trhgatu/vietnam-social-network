@@ -12,7 +12,6 @@ export default function ProfileMusicPicker() {
     const { user, token } = useAuth();
     const [searchTerm, setSearchTerm] = useState("");
     const [tracks, setTracks] = useState<Track[]>([]);
-    const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -37,7 +36,6 @@ export default function ProfileMusicPicker() {
     };
 
     const handleSelectTrack = async (track: Track) => {
-        setSelectedTrack(track);
         try {
             await instance.post(`/users/${user?._id}/favorite-song`, {
                 trackId: track.id,

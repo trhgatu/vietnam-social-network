@@ -10,8 +10,6 @@ import ProfileTabs from "./components/profile-tabs";
 import ProfileSkeleton from "./components/profile-skeleton";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import FavoriteSong
-  from "@/app/(main)/[username]/components/favorite-song";
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
   const { username } = useParams();
   const [user, setUser] = useState<User | null>(null);
