@@ -33,19 +33,15 @@ export function AppSidebar() {
       setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial check
     checkIfMobile();
 
-    // Add event listener for window resize
     window.addEventListener('resize', checkIfMobile);
 
-    // Cleanup
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
   const isDarkMode = theme === "dark";
 
-  // Navigation items and their paths/icons
   const navItems = [
     {
       icon: Home,
@@ -91,7 +87,6 @@ export function AppSidebar() {
   return (
     <div className="fixed top-[60px] md:top-[60px] w-full h-16 md:h-[calc(100vh-60px)] md:w-[70px] lg:w-[240px] bg-white dark:bg-zinc-950 border-t md:border-t-0 md:border-r border-gray-200 dark:border-zinc-800 z-30">
       <div className="flex md:flex-col h-full">
-        {/* Desktop User Profile Section */}
         <div className="hidden md:flex flex-col p-3 lg:p-4 lg:pb-2">
           <Link
             href={user ? `/${user.username}` : "/signin"}
@@ -122,14 +117,10 @@ export function AppSidebar() {
           <Separator className="hidden lg:block my-2" />
         </div>
 
-        {/* Navigation Section */}
         <div className="flex md:flex-col justify-around md:justify-start md:flex-1 md:overflow-y-auto w-full">
-          {/* Desktop & Mobile Navigation */}
-          <nav className="flex md:flex-col w-full">
+          <nav className="flex md:flex-col justify-around w-full">
             {navItems.map((item) => {
               const isActive = pathname === item.path || pathname.startsWith(item.path);
-
-              // Skip rendering on mobile if not meant for mobile
               if (isMobile && !item.showMobile) {
                 return null;
               }
@@ -144,7 +135,7 @@ export function AppSidebar() {
                     text-xs md:text-sm font-medium
                     transition-colors
                     ${isActive
-                      ? 'text-blue-600 dark:text-blue-500'
+                      ? 'text-red-600 dark:text-red-500'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-900'
                     }
                     ${isActive && 'md:bg-gray-100 md:dark:bg-zinc-900'}
@@ -161,7 +152,7 @@ export function AppSidebar() {
                       </div>
                     )}
                   </div>
-                  <span className="md:hidden lg:inline">{item.label}</span>
+                  <span className="md:hidden hidden lg:inline">{item.label}</span>
                 </Link>
               );
             })}

@@ -84,30 +84,6 @@ export function Header() {
             </div>
           </div>
 
-          {/* Middle - Desktop navigation icons */}
-          <div className="hidden md:flex items-center justify-center flex-1">
-            <div className="flex items-center">
-              <Button variant="ghost" size="lg" className="h-[60px] px-6 rounded-none border-b-2 border-transparent hover:border-primary hover:bg-transparent" asChild>
-                <Link href="/">
-                  <Home className="h-6 w-6" />
-                </Link>
-              </Button>
-
-              <Button variant="ghost" size="lg" className="h-[60px] px-6 rounded-none border-b-2 border-transparent hover:border-primary hover:bg-transparent" asChild>
-                <Link href="/friends">
-                  <Users2 className="h-6 w-6" />
-                </Link>
-              </Button>
-
-              <Button variant="ghost" size="lg" className="h-[60px] px-6 rounded-none border-b-2 border-transparent hover:border-primary hover:bg-transparent" asChild>
-                <Link href="/messages">
-                  <MessageSquare className="h-6 w-6" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Right side - User menu and toggles */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* Mobile search button */}
             <Button
@@ -124,29 +100,6 @@ export function Header() {
               <LanguageSwitcher />
               <ModeToggle />
             </div>
-
-            {/* Notification icon - desktop only */}
-            <div className="hidden md:block">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-0 right-0 flex h-2 w-2 rounded-full bg-red-500"></span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80">
-                  <DropdownMenuLabel>{t('notifications')}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <div className="max-h-[400px] overflow-auto py-1">
-                    <div className="text-center text-sm text-gray-500 py-4">
-                      {t('general.loading')}
-                    </div>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            {/* User menu */}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center gap-2 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-zinc-800">

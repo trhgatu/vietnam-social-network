@@ -26,7 +26,7 @@ export function MainLayout({ children }: LayoutProps) {
         </div>
 
         {/* Main Content - Responsive */}
-        <main className="flex-1 pt-[60px] transition-all duration-200 min-h-[calc(100vh-60px)] pb-16 md:pb-0">
+        <main className="flex-1 md:pt-[90px] pt-[146px] transition-all duration-200 min-h-[calc(100vh-60px)] pb-16 md:pb-0">
           <div className={`
             mx-auto w-full
             ${isProfilePage

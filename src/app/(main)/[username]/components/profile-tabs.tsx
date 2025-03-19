@@ -52,7 +52,7 @@ export default function ProfileTabs({ user }: ProfileTabsProps) {
         <div className="flex min-w-max">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path ||
-                            (tab.path === `${basePath}/timeline` && pathname === basePath);
+              (tab.path === `${basePath}/timeline` && pathname === basePath);
 
             return (
               <button

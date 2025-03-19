@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function TimelinePage() {
   const { t } = useTranslation("common");
@@ -170,7 +171,9 @@ export default function TimelinePage() {
 
                 {post.image && (
                   <div className="relative aspect-video rounded-md overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                    <img
+                    <Image
+                      width={800}
+                      height={800}
                       src={post.image}
                       alt="Post image"
                       className="w-full h-full object-cover"
@@ -179,8 +182,7 @@ export default function TimelinePage() {
                 )}
               </CardContent>
 
-              <CardFooter className="flex flex-col p-0">
-                {/* Like counter and stats */}
+              <div className="flex flex-col p-0">
                 <div className="px-4 py-2 flex justify-between items-center text-gray-500 text-sm">
                   <div className="flex items-center gap-1.5">
                     <div className="flex -space-x-1">
@@ -224,9 +226,7 @@ export default function TimelinePage() {
 
                 <Separator />
 
-                {/* Comments section */}
                 <div className="p-4 space-y-3">
-                  {/* A sample comment */}
                   <div className="flex gap-2">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src="https://avatar.iran.liara.run/public/girl?v=3" alt="User" />
@@ -257,7 +257,7 @@ export default function TimelinePage() {
                     </div>
                   </div>
                 </div>
-              </CardFooter>
+              </div>
             </Card>
           );
         })}

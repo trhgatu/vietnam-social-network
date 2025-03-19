@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { User } from "@/shared/types/user";
 import { MessageCircle, UserPlus, Edit3, MoreHorizontal, Users, Grid, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -38,9 +39,11 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         <div className="relative rounded-full overflow-hidden border-4 border-white dark:border-zinc-950 shadow-md">
           <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44">
             {user.avatar ? (
-              <img
+              <Image
                 src={user.avatar}
                 alt={`${user.name} profile`}
+                width={100}
+                height={100}
                 className="w-full h-full object-cover"
               />
             ) : (

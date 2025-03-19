@@ -45,7 +45,8 @@
         "timeline": "Dòng thời gian",
         "about": "Giới thiệu",
         "friends": "Bạn bè",
-        "photos": "Ảnh"
+        "photos": "Ảnh",
+        "saved": "Đã lưu"
       }
     },
     "post": {
@@ -98,6 +99,9 @@
       "system": "Hệ thống",
       "appearance": "Giao diện",
       "search": "Tìm kiếm"
+    },
+    "notifications" : {
+      "title" : "Thông báo"
     },
     "friends": {
       "title": "Bạn bè",

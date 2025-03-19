@@ -1,7 +1,7 @@
 export default function AboutPage() {
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="rounded-lg shadow p-6">
           <h2 className="text-xl font-medium mb-4">Giới thiệu</h2>
 
           <div className="space-y-8">

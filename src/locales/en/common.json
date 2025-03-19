@@ -45,7 +45,8 @@
         "timeline": "Timeline",
         "about": "About",
         "friends": "Friends",
-        "photos": "Photos"
+        "photos": "Photos",
+        "saved" : "Saved"
       }
     },
     "post": {
@@ -98,6 +99,9 @@
       "system": "System",
       "appearance": "Appearance",
       "search": "Search"
+    },
+    "notifications" : {
+      "title" : "Notifications"
     },
     "friends": {
       "title": "Friends",
