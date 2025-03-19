@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ModeToggle } from '@/components/toggle-theme';
+import { LanguageSwitcher } from '@/components/toggle-translate';
 
 export function Header() {
   return (
@@ -13,6 +14,7 @@ export function Header() {
           <span className="hidden sm:block text-xl font-bold">Vietnam Social.</span>
         </Link>
         <div className="flex items-center gap-4">
+          <LanguageSwitcher/>
           <ModeToggle />
         </div>
       </div>

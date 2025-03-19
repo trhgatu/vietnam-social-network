@@ -1,33 +1,34 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { type LucideIcon } from "lucide-react"
-import { usePathname } from "next/navigation"
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/shared/contexts/auth-context";
+import { type LucideIcon } from "lucide-react";
+
 interface NavItem {
-  title: string
-  url: string
-  icon?: LucideIcon
+  key: string;
+  url: string;
+  icon?: LucideIcon;
 }
 
 interface NavMainProps {
-  items: NavItem[]
+  items: NavItem[];
 }
-import { useAuth } from "@/shared/contexts/auth-context"
-import { Separator } from "@/components/ui/separator"
+
 export function NavMain({ items }: NavMainProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const pathname = usePathname()
+  const pathname = usePathname();
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -36,25 +37,32 @@ export function NavMain({ items }: NavMainProps) {
     <SidebarGroup>
       <SidebarMenu>
         {items.map((item) => {
-          const isActive = pathname === item.url
+          const isActive = pathname === item.url;
           return (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.key}>
               <SidebarMenuButton asChild>
                 <Link
                   href={item.url}
-                  className={`flex items-center gap-3 px-4 py-6 rounded-md transition ${isActive
-                    ? "bg-neutral-100 font-bold dark:bg-neutral-600"
-                    : "hover:bg-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
-                    }`}
+                  className={`flex items-center gap-3 px-4 py-6 rounded-md transition ${
+                    isActive
+                      ? "bg-neutral-100 font-bold dark:bg-neutral-600"
+                      : "hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                  }`}
                 >
-                  {item.icon && <item.icon className="w-5 h-5" />}
-                  <span className="text-base">{item.title}</span>
+                  {item.icon && (
+                    <item.icon
+                      className={`w-5 h-5 transition ${
+                        isActive ? "text-primary dark:text-primary" : "text-neutral-500"
+                      }`}
+                    />
+                  )}
+                  <span className="text-base">{t(item.key)}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          )
+          );
         })}
-        <Separator/>
+        <Separator />
         <SidebarMenuItem>
           <Link href={`/${user.username}/timeline`}>
             <SidebarMenuButton
@@ -69,11 +77,10 @@ export function NavMain({ items }: NavMainProps) {
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">@{user.username}</span>
               </div>
-
             </SidebarMenuButton>
           </Link>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
