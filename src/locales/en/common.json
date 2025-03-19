@@ -24,7 +24,8 @@
       "signIn": "Sign In",
       "logout": "Logout",
       "lightMode": "Light Mode",
-      "darkMode": "Dark Mode"
+      "darkMode": "Dark Mode",
+      "signUp": "Sign Up"
     },
     "profile": {
       "timeline": "Timeline",
@@ -39,12 +40,12 @@
       "mutualFriends": "mutual friends",
       "followers": "followers",
       "following": "following",
+      "editProfile": "Edit Profile",
       "tabs": {
         "timeline": "Timeline",
         "about": "About",
         "friends": "Friends",
-        "photos": "Photos",
-        "saved": "Saved"
+        "photos": "Photos"
       }
     },
     "post": {
@@ -58,7 +59,7 @@
       "share": "Share",
       "noPosts": "No posts yet",
       "post": "Post",
-      "error": "Something went wrong",
+      "error": "Error creating post",
       "public": "Public",
       "publicDesc": "Anyone can see your post",
       "friends": "Friends",
@@ -71,7 +72,12 @@
       "report": "Report post",
       "unfollow": "Unfollow",
       "comments": "comments",
-      "shares": "shares"
+      "shares": "shares",
+      "visibility": {
+        "public": "Public",
+        "friends": "Friends",
+        "private": "Private"
+      }
     },
     "story": {
       "createStory": "Create Story",
@@ -92,5 +98,20 @@
       "system": "System",
       "appearance": "Appearance",
       "search": "Search"
+    },
+    "friends": {
+      "title": "Friends",
+      "searchFriends": "Search friends...",
+      "allFriends": "All Friends",
+      "friendRequests": "Friend Requests",
+      "mutualFriends": "mutual friends",
+      "online": "Online",
+      "offline": "Offline",
+      "message": "Message",
+      "unfriend": "Unfriend",
+      "blockUser": "Block User",
+      "reportUser": "Report User",
+      "accept": "Accept",
+      "decline": "Decline"
     }
   }

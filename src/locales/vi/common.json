@@ -24,27 +24,28 @@
       "signIn": "Đăng nhập",
       "logout": "Đăng xuất",
       "lightMode": "Chế độ sáng",
-      "darkMode": "Chế độ tối"
+      "darkMode": "Chế độ tối",
+      "signUp": "Đăng ký"
     },
     "profile": {
       "timeline": "Dòng thời gian",
       "posts": "Bài viết",
       "about": "Giới thiệu",
       "photos": "Ảnh",
-      "addFriend": "Kết bạn",
+      "addFriend": "Thêm bạn bè",
       "message": "Nhắn tin",
       "updateCover": "Cập nhật ảnh bìa",
       "updateProfile": "Cập nhật ảnh đại diện",
       "userNotFound": "Không tìm thấy người dùng",
       "mutualFriends": "bạn chung",
-      "followers": "người theo dõi",
-      "following": "đang theo dõi",
+      "followers": "Người theo dõi",
+      "following": "Đang theo dõi",
+      "editProfile": "Chỉnh sửa trang cá nhân",
       "tabs": {
         "timeline": "Dòng thời gian",
         "about": "Giới thiệu",
         "friends": "Bạn bè",
-        "photos": "Ảnh",
-        "saved": "Đã lưu"
+        "photos": "Ảnh"
       }
     },
     "post": {
@@ -57,13 +58,13 @@
       "comment": "Bình luận",
       "share": "Chia sẻ",
       "noPosts": "Chưa có bài viết nào",
-      "post": "Đăng",
-      "error": "Đã xảy ra lỗi",
+      "post": "Đăng bài",
+      "error": "Lỗi khi tạo bài viết",
       "public": "Công khai",
       "publicDesc": "Bất kỳ ai cũng có thể xem bài viết của bạn",
       "friends": "Bạn bè",
       "friendsDesc": "Chỉ bạn bè của bạn mới có thể xem bài viết này",
-      "private": "Chỉ mình tôi",
+      "private": "Riêng tư",
       "privateDesc": "Chỉ bạn mới có thể xem bài viết này",
       "addToPost": "Thêm vào bài viết",
       "location": "Vị trí",
@@ -71,7 +72,12 @@
       "report": "Báo cáo bài viết",
       "unfollow": "Bỏ theo dõi",
       "comments": "bình luận",
-      "shares": "chia sẻ"
+      "shares": "chia sẻ",
+      "visibility": {
+        "public": "Công khai",
+        "friends": "Bạn bè",
+        "private": "Riêng tư"
+      }
     },
     "story": {
       "createStory": "Tạo tin",
@@ -92,5 +98,20 @@
       "system": "Hệ thống",
       "appearance": "Giao diện",
       "search": "Tìm kiếm"
+    },
+    "friends": {
+      "title": "Bạn bè",
+      "searchFriends": "Tìm kiếm bạn bè...",
+      "allFriends": "Tất cả bạn bè",
+      "friendRequests": "Lời mời kết bạn",
+      "mutualFriends": "bạn chung",
+      "online": "Đang hoạt động",
+      "offline": "Ngoại tuyến",
+      "message": "Nhắn tin",
+      "unfriend": "Hủy kết bạn",
+      "blockUser": "Chặn người dùng",
+      "reportUser": "Báo cáo",
+      "accept": "Chấp nhận",
+      "decline": "Từ chối"
     }
   }
