@@ -29,7 +29,7 @@ export const usePost = () => {
       socket.emit('create:post', {
         content,
         media,
-        author: user.id,
+        author: user._id,
         createdAt: new Date()
       });
     }
@@ -52,7 +52,7 @@ export const usePost = () => {
         postId,
         comment: {
           content,
-          author: user.id,
+          author: user._id,
           createdAt: new Date()
         }
       });

@@ -32,12 +32,12 @@ export const useChat = (chatId: string) => {
         chatId,
         message: {
           content,
-          sender: user?.id,
+          sender: user?._id,
           timestamp: new Date()
         }
       });
     }
-  }, [socket, chatId, user?.id]);
+  }, [socket, chatId, user?._id]);
 
   // Mark message as read
   const markAsRead = useCallback((messageId: string) => {
