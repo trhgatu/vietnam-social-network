@@ -1,86 +1,129 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { fetchUser, loginUser, logoutUser } from "@/api-client/auth-api";
-import { AuthContextType, User } from "@/shared/types";
+import { User } from "../types/user";
+import { createContext, useContext, useEffect, useState } from "react";
+import { loginUser, logoutUser, refreshToken, setAuthToken } from "@/shared/services/auth-services";
+import { getToken, setToken } from "@/shared/utils/jwt-helper";
+import { useRouter } from "next/navigation";
 import LoadingPage from "@/shared/components/loading-page/loading-page";
 
-const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export interface AuthContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  login: (token: string) => Promise<boolean>;
+  logout: () => Promise<void>;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  token: string | null;
+}
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  setUser: () => { },
+  login: async () => false,
+  logout: async () => { },
+  isAuthenticated: false,
+  isLoading: true,
+  token: null,
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [isRedirecting, setIsRedirecting] = useState(false);
-    const router = useRouter();
-    const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [token, setTokenState] = useState<string | null>(null);
+  const router = useRouter();
 
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        setIsLoading(true);
+        const storedToken = getToken();
 
+        if (storedToken) {
+          // Set the token in axios headers first
+          setAuthToken(storedToken);
+          setTokenState(storedToken);
 
-    useEffect(() => {
-        const initializeUser = async () => {
-            setLoading(true);
-            const token = localStorage.getItem("token");
+          // Then try to refresh or fetch user data
+          const response = await refreshToken();
 
-            if (token) {
-                const data = await fetchUser();
-                if (data?.user) {
-                    setUser(data.user);
-                }
+          if (response && response.user) {
+            setUser(response.user);
+          } else {
+            // If refresh fails, try to fetch user directly
+            const userData = await loginUser(storedToken);
+            if (userData && userData.user) {
+              setUser(userData.user);
+            } else {
+              // If all fails, clear token
+              localStorage.removeItem('token');
+              setAuthToken(null);
+              setTokenState(null);
             }
-            setLoading(false);
-        };
-
-        initializeUser();
-    }, []);
-
-    useEffect(() => {
-        if (loading || isRedirecting) return;
-
-        if (!user && !publicRoutes.includes(pathname)) {
-            setIsRedirecting(true);
-            router.push("/sign-in");
-            setTimeout(() => setIsRedirecting(false), 500);
+          }
         }
-
-        if (user && publicRoutes.includes(pathname)) {
-            setIsRedirecting(true);
-            router.push("/home");
-            setTimeout(() => setIsRedirecting(false), 500);
-        }
-    }, [user, pathname, router, loading, isRedirecting]);
-
-
-    const login = async (token: string): Promise<void> => {
-        const data = await loginUser(token);
-        if (data) {
-            setUser(data.user);
-            router.push("/home");
-        }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+        // On error, clear any potentially invalid tokens
+        localStorage.removeItem('token');
+        setAuthToken(null);
+        setTokenState(null);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const logout = async (): Promise<void> => {
-        await logoutUser();
-        setUser(null);
-        router.push("/sign-in");
-    };
+    initializeAuth();
+  }, []);
 
-    if (loading || isRedirecting) {
-        return <LoadingPage />;
+  const login = async (newToken: string): Promise<boolean> => {
+    try {
+      setToken(newToken);
+      setTokenState(newToken);
+      const response = await loginUser(newToken);
+
+      if (response && response.user) {
+        setUser(response.user);
+        router.push("/home");
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
     }
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const logout = async (): Promise<void> => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setUser(null);
+      setTokenState(null);
+      localStorage.removeItem('token');
+      setAuthToken(null);
+      router.push("/sign-in");
+    }
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        isLoading,
+        token,
+      }}
+    >
+      {isLoading ? <LoadingPage /> : children}
+    </AuthContext.Provider>
+  );
 };
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
-};
+export const useAuth = () => useContext(AuthContext);

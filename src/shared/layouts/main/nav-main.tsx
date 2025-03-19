@@ -26,10 +26,10 @@ interface NavMainProps {
 
 export function NavMain({ items }: NavMainProps) {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const pathname = usePathname();
 
-  if (!user) {
+  if (!currentUser) {
     return <div>Loading...</div>;
   }
 
@@ -64,18 +64,18 @@ export function NavMain({ items }: NavMainProps) {
         })}
         <Separator />
         <SidebarMenuItem>
-          <Link href={`/${user.username}/timeline`}>
+          <Link href={`/${currentUser.username}/timeline`}>
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-base leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">@{user.username}</span>
+                <span className="truncate font-semibold">{currentUser.name}</span>
+                <span className="truncate text-xs">@{currentUser.username}</span>
               </div>
             </SidebarMenuButton>
           </Link>

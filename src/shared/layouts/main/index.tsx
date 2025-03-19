@@ -3,50 +3,50 @@
 
 import { Header } from './header';
 import { LayoutProps } from '@/models/common';
-import { AppSidebar } from '@/shared/layouts/main/app-sidebar';
+import { AppSidebar } from './app-sidebar';
 import { usePathname } from 'next/navigation';
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
 import { useAuth } from '@/shared/contexts/auth-context';
-
-import { RightSidebar } from '@/shared/layouts/main/right-sidebar';
+import { RightSidebar } from './right-sidebar';
 
 export function MainLayout({ children }: LayoutProps) {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  const isProfilePage = pathname.startsWith(`/${user?.username}`);
-  const containerClass = isProfilePage
-  ? "xl:grid-cols-1"
-  : "xl:grid-cols-[minmax(0,1fr)_var(--container-3xs)]";
+  // Determine if we're on a profile page to adjust layout
+  const isProfilePage = user?.username && pathname.startsWith(`/${user.username}`);
+
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
       <Header />
-      <main>
-        <SidebarProvider className='mt-[60px] h-[calc(100vh-60px)]" '>
-          <AppSidebar className="mt-[60px] h-[calc(100vh-60px)]" />
-          <SidebarInset>
-            <header className="md:flex hidden fixed h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-              <div className="flex items-center gap-2 px-4">
-                <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 h-4" />
-              </div>
-            </header>
-            <div className={`mx-auto md:pl-8 grid w-full max-w-2xl gap-10 xl:max-w-5xl ${containerClass}`}>
-              {children}
-              {!isProfilePage && (
-                <div className='max-xl:hidden'>
-                  <RightSidebar />
-                </div>
-              )}
+
+      <div className="flex flex-col md:flex-row">
+        {/* Left Sidebar - Responsive */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 md:relative md:border-t-0 md:w-[70px] lg:w-[240px] md:flex-shrink-0">
+          <AppSidebar />
+        </div>
+
+        {/* Main Content - Responsive */}
+        <main className="flex-1 pt-[60px] transition-all duration-200 min-h-[calc(100vh-60px)] pb-16 md:pb-0">
+          <div className={`
+            mx-auto w-full
+            ${isProfilePage
+              ? 'max-w-full px-0'
+              : 'px-2 sm:px-4 md:px-6 max-w-3xl lg:max-w-4xl'
+            }
+          `}>
+            {children}
+          </div>
+        </main>
+
+        {/* Right Sidebar - Only show on larger screens and not on profile pages */}
+        {!isProfilePage && (
+          <div className="hidden xl:block w-[300px] flex-shrink-0">
+            <div className="fixed h-[calc(100vh-60px)] w-[300px] border-l dark:border-zinc-800 bg-white dark:bg-zinc-950 pt-[60px] overflow-y-auto">
+              <RightSidebar />
             </div>
-          </SidebarInset>
-        </SidebarProvider>
-      </main>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

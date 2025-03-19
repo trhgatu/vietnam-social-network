@@ -3,10 +3,9 @@ import { PostForm } from "@/app/(main)/home/components/post-form";
 import { StoryCarousel } from "@/app/(main)/home/components/story-carousel";
 
 export function HomePage() {
-
     return (
         <div className="w-full flex flex-col">
-            <div className="md:mx-4 md:mt-4 mx-2 mt-2">
+            <div className="space-y-4 w-full max-w-full sm:max-w-lg md:max-w-2xl mx-auto">
                 <StoryCarousel />
                 <PostForm />
                 <NewsFeed />

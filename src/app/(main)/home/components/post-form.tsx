@@ -3,9 +3,12 @@
 import instance from "@/api-client/axios-client";
 import { useSWRConfig } from "swr";
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Divider } from "antd";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/shared/contexts/auth-context";
+import { useTranslation } from "react-i18next";
+import { useToast } from "@/hooks/use-toast";
 import {
     Dialog,
     DialogContent,
@@ -13,46 +16,50 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Earth, FileImage, Tag, Laugh } from "lucide-react";
+import { Image, SmilePlus, MapPin, Globe, Users, Lock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
-import { Spinner } from "@heroui/spinner"
+
 const audiences = [
     {
         id: 1,
-        name: "Công khai",
-        message: "Bất kỳ ai cũng có thể xem bài viết này.",
-        icon: <Earth className="w-4 h-4 sm:w-5 sm:h-5" />,
+        name: "Public",
+        nameTrans: "post.public",
+        message: "post.publicDesc",
+        icon: <Globe className="w-4 h-4" />,
     },
     {
         id: 2,
-        name: "Tùy chỉnh",
-        message: "Chỉ những người bạn chọn mới có thể xem bài viết này.",
-        icon: <Tag className="w-4 h-4 sm:w-5 sm:h-5" />,
+        name: "Friends",
+        nameTrans: "post.friends",
+        message: "post.friendsDesc",
+        icon: <Users className="w-4 h-4" />,
     },
     {
         id: 3,
-        name: "Bạn bè",
-        message: "Chỉ bạn bè của bạn mới có thể xem bài viết này.",
-        icon: <Laugh className="w-4 h-4 sm:w-5 sm:h-5" />,
+        name: "Only me",
+        nameTrans: "post.private",
+        message: "post.privateDesc",
+        icon: <Lock className="w-4 h-4" />,
     },
 ];
 
 export function PostForm() {
     const { toast } = useToast();
     const { mutate } = useSWRConfig();
+    const { user } = useAuth();
+    const { t } = useTranslation('common');
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState(audiences[0]);
     const [isOpen, setIsOpen] = useState(false);
+
     const handleCreatePost = async () => {
         if (!content.trim()) return;
 
@@ -68,150 +75,146 @@ export function PostForm() {
             );
             if (response.data.success) {
                 toast({
-                    description: `${response.data.message}`
+                    description: response.data.message
                 });
                 setContent("");
                 setIsOpen(false);
                 mutate('/posts');
             } else {
-                toast({ description: response.data.message, variant: "destructive" });
+                toast({
+                    description: response.data.message,
+                    variant: "destructive"
+                });
             }
         } catch (error) {
-            console.log(error);
-            toast({ description: "Đã có lỗi xảy ra!", variant: "destructive" });
+            console.error(error);
+            toast({
+                description: t('post.error'),
+                variant: "destructive"
+            });
         } finally {
             setLoading(false);
         }
     };
 
+    if (!user) return null;
 
     return (
         <div className="mb-4">
-            <Card>
-                <CardHeader className="p-4">
-                    <CardTitle>
-                        <div className="flex items-center">
-                            <Avatar>
-                                <AvatarImage src="https://avatar.iran.liara.run/public" />
-                                <AvatarFallback>Anh Tu</AvatarFallback>
-                            </Avatar>
+            <Card className="shadow-sm border border-gray-200 dark:border-zinc-800">
+                <CardHeader className="p-4 pb-2">
+                    <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                            <AvatarImage src={user.avatar} alt={user.name} />
+                            <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
 
-                            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                                <DialogTrigger className="flex-1">
-                                    <div className="flex-1 ml-2 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 cursor-pointer transition-all duration-200 rounded-full p-2">
-                                        <span className="font-medium text-gray-700 dark:text-gray-200 text-sm sm:text-base">
-                                            Bạn đang nghĩ gì, Tú?
-                                        </span>
-                                    </div>
-                                </DialogTrigger>
-                                <DialogContent className="w-full max-w-md sm:max-w-lg">
-                                    <DialogHeader>
-                                        <DialogTitle className="text-center text-lg font-semibold text-gray-800 dark:text-gray-100">
-                                            Tạo bài viết
-                                        </DialogTitle>
-                                    </DialogHeader>
-                                    <div>
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="flex items-center">
-                                                <Avatar>
-                                                    <AvatarImage src="https://avatar.iran.liara.run/public/boy" />
-                                                </Avatar>
-                                                <span className="ml-2 text-sm sm:text-base">Anh Tú</span>
-                                            </div>
+                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                            <DialogTrigger className="flex-1">
+                                <div className="flex-1 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 cursor-pointer transition-colors duration-200 rounded-full p-2.5 md:p-3 text-left px-4">
+                                    <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
+                                        {t('post.whatThinking')}
+                                    </span>
+                                </div>
+                            </DialogTrigger>
 
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger>
-                                                    <div className="flex items-center cursor-pointer">
+                            <DialogContent className="w-full max-w-md sm:max-w-lg">
+                                <DialogHeader>
+                                    <DialogTitle className="text-center text-lg font-semibold">
+                                        {t('post.create')}
+                                    </DialogTitle>
+                                </DialogHeader>
+
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <Avatar>
+                                                <AvatarImage src={user.avatar} alt={user.name} />
+                                                <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <span className="font-medium text-sm md:text-base">{user.name}</span>
+
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                                                         {selectedAudience.icon}
-                                                        <span className="ml-2 text-sm sm:text-base">
-                                                            {selectedAudience.name}
-                                                        </span>
-                                                    </div>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent>
-                                                    <div className="max-h-60 overflow-y-auto">
-                                                        {audiences.map((msg) => (
+                                                        <span>{t(selectedAudience.nameTrans)}</span>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent>
+                                                        {audiences.map((audience) => (
                                                             <DropdownMenuItem
-                                                                key={msg.id}
-                                                                className="flex items-center space-x-3 p-2"
-                                                                onClick={() => setSelectedAudience(msg)}
+                                                                key={audience.id}
+                                                                className="flex items-center gap-2 p-2"
+                                                                onClick={() => setSelectedAudience(audience)}
                                                             >
-                                                                {msg.icon}
+                                                                {audience.icon}
                                                                 <div className="flex flex-col">
-                                                                    <span className="font-medium">{msg.name}</span>
-                                                                    <span className="text-sm text-gray-500">{msg.message}</span>
+                                                                    <span className="font-medium text-sm">{t(audience.nameTrans)}</span>
+                                                                    <span className="text-xs text-gray-500">{t(audience.message)}</span>
                                                                 </div>
                                                             </DropdownMenuItem>
                                                         ))}
-                                                    </div>
-                                                    <DropdownMenuSeparator />
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </div>
                                         </div>
                                     </div>
-                                    <Textarea
-                                        className="w-full resize-none bg-transparent border-none focus:ring-0 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base"
-                                        placeholder="Bạn đang nghĩ gì, Tú?"
-                                        value={content}
-                                        onChange={(e) => setContent(e.target.value)}
-                                    />
-                                    <Button
-                                        className="w-full mt-3 rounded-lg py-2 text-sm sm:text-base"
-                                        onClick={handleCreatePost}
+                                </div>
 
-                                    >
-                                        {loading ? <Spinner color="default" /> : "Đăng"}
-                                    </Button>
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                    </CardTitle>
-                </CardHeader>
-                <Divider className="!m-0 hidden sm:block" />
-                <CardContent className="px-4 py-2 hidden sm:block">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex flex-wrap items-center flex-1 gap-2 sm:gap-6">
-                            <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <p>Ảnh</p>
-                                <FileImage className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-                            </div>
-                            <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <p>Cảm xúc</p>
-                                <Laugh className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-                            </div>
-                            <div className="flex items-center cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all duration-200 py-1 px-2 rounded-full text-sm sm:text-base">
-                                <p>Gắn thẻ</p>
-                                <Tag className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-                            </div>
-                        </div>
-                        <div className="flex items-center text-sm sm:text-base">
-                            <DropdownMenu modal={false}>
-                                <DropdownMenuTrigger>
-                                    <div className="flex items-center ml-1 py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer transition-all duration-200">
-                                        {selectedAudience.icon}
-                                        <p className="ml-1">{selectedAudience.name}</p>
+                                <Textarea
+                                    className="min-h-24 resize-none bg-transparent border-none focus-visible:ring-0 p-0"
+                                    placeholder={t('post.whatThinking')}
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                />
+
+                                <div className="rounded-lg border border-gray-200 dark:border-zinc-800 p-2 flex items-center justify-between">
+                                    <span className="text-sm font-medium">{t('post.addToPost')}</span>
+                                    <div className="flex gap-1">
+                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                                            <Image className="h-5 w-5 text-green-500" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                                            <SmilePlus className="h-5 w-5 text-yellow-500" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                                            <MapPin className="h-5 w-5 text-red-500" />
+                                        </Button>
                                     </div>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <div className="max-h-60 overflow-y-auto">
-                                        {audiences.map((msg) => (
-                                            <DropdownMenuItem
-                                                key={msg.id}
-                                                className="flex items-center space-x-3 p-2"
-                                                onClick={() => setSelectedAudience(msg)}
-                                            >
-                                                {msg.icon}
-                                                <div className="flex flex-col">
-                                                    <span className="font-medium">{msg.name}</span>
-                                                    <span className="text-sm text-gray-500">{msg.message}</span>
-                                                </div>
-                                            </DropdownMenuItem>
-                                        ))}
-                                    </div>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+                                </div>
+
+                                <Button
+                                    className="w-full font-medium"
+                                    disabled={!content.trim() || loading}
+                                    onClick={handleCreatePost}
+                                >
+                                    {loading ? (
+                                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    ) : null}
+                                    {t('post.post')}
+                                </Button>
+                            </DialogContent>
+                        </Dialog>
                     </div>
+                </CardHeader>
+
+                <Separator className="my-1" />
+
+                <CardContent className="p-2 md:p-4 flex flex-wrap justify-between">
+                    <Button variant="ghost" className="flex-1 flex items-center justify-center gap-2">
+                        <Image className="h-5 w-5 text-green-500" />
+                        <span className="text-sm md:text-base">{t('post.photoVideo')}</span>
+                    </Button>
+
+                    <Button variant="ghost" className="flex-1 flex items-center justify-center gap-2">
+                        <SmilePlus className="h-5 w-5 text-yellow-500" />
+                        <span className="text-sm md:text-base">{t('post.feeling')}</span>
+                    </Button>
+
+                    <Button variant="ghost" className="flex-1 flex items-center justify-center gap-2">
+                        <MapPin className="h-5 w-5 text-red-500" />
+                        <span className="text-sm md:text-base">{t('post.location')}</span>
+                    </Button>
                 </CardContent>
             </Card>
         </div>

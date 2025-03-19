@@ -11,8 +11,11 @@ export interface AuthInput {
 }
 
 export interface AuthContextType {
-  user: User | null;
+  currentUser: User | null;
+  profileUser: User | null;
   login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
-  loading: boolean
+  setProfileUser: (user: User) => void;
+  loading: boolean;
 }
+

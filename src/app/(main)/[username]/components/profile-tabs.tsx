@@ -1,47 +1,80 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { User } from "@/shared/types/user";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Grid, Clock, Bookmark, Users, Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ProfileTabsProps {
-  user: User | null;
+  user: User;
 }
 
 export default function ProfileTabs({ user }: ProfileTabsProps) {
+  const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation("common");
 
-  if (!user) return null;
+  // Get the base path for user profile (e.g., /username)
+  const basePath = `/${user.username}`;
 
-  const TABS = [
-    { label: "Dòng thời gian", href: `/${user.username}/timeline` },
-    { label: "Bài viết", href: `/${user.username}/posts` },
-    { label: "Giới thiệu", href: `/${user.username}/about` },
-    { label: "Bạn bè", href: `/${user.username}/friends` },
-    { label: "Ảnh", href: `/${user.username}/photos` },
+  // Define tabs
+  const tabs = [
+    {
+      name: t('profile.tabs.timeline'),
+      path: `${basePath}/timeline`,
+      icon: <Grid className="w-4 h-4 md:mr-1.5" />
+    },
+    {
+      name: t('profile.tabs.about'),
+      path: `${basePath}/about`,
+      icon: <Star className="w-4 h-4 md:mr-1.5" />
+    },
+    {
+      name: t('profile.tabs.friends'),
+      path: `${basePath}/friends`,
+      icon: <Users className="w-4 h-4 md:mr-1.5" />
+    },
+    {
+      name: t('profile.tabs.photos'),
+      path: `${basePath}/photos`,
+      icon: <Clock className="w-4 h-4 md:mr-1.5" />
+    },
+    {
+      name: t('profile.tabs.saved'),
+      path: `${basePath}/saved`,
+      icon: <Bookmark className="w-4 h-4 md:mr-1.5" />
+    },
   ];
 
   return (
-    <nav className="flex overflow-x-auto border-b border-gray-300 sticky top-0 bg-white z-10 max-w-4xl mx-auto">
-      {TABS.map(({ label, href }) => {
-        const isActive = pathname.startsWith(href);
+    <div className="sticky top-[60px] bg-white dark:bg-zinc-950 z-10 border-t border-b border-gray-200 dark:border-zinc-800 px-1 sm:px-2 md:px-0 w-full">
+      <div className="max-w-4xl mx-auto overflow-x-auto scrollbar-hide">
+        <div className="flex min-w-max">
+          {tabs.map((tab) => {
+            const isActive = pathname === tab.path ||
+                            (tab.path === `${basePath}/timeline` && pathname === basePath);
 
-        return (
-          <Link
-            key={href}
-            href={href}
-            className={`
-              px-4 py-3 whitespace-nowrap transition-colors duration-200
-              ${isActive
-                ? 'border-b-2 border-blue-500 font-medium text-blue-600'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-              }
-            `}
-          >
-            {label}
-          </Link>
-        );
-      })}
-    </nav>
+            return (
+              <button
+                key={tab.path}
+                onClick={() => router.push(tab.path)}
+                className={`
+                  flex items-center justify-center md:justify-start py-3 px-2.5 sm:px-3 md:px-4 relative text-sm border-b-2 transition-colors duration-150
+                  ${isActive
+                    ? 'border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500 font-medium'
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
+                  }
+                `}
+              >
+                <div className="flex items-center">
+                  {tab.icon}
+                  <span className="hidden md:inline">{tab.name}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
