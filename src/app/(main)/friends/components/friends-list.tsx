@@ -6,19 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useFriends } from "@/shared/hooks/friends/use-friends";
+import { useAuth } from "@/shared/contexts/auth-context";
 
 export function FriendsList() {
+  const { user } = useAuth();
+  const { friends } = useFriends(user?.username as string);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
 
-  const friends = [
-    { id: 1, name: "Nguyễn Văn A", avatar: "/assets/user1.jpg", status: "online" },
-    { id: 2, name: "Trần Thị B", avatar: "/assets/user2.jpg", status: "offline" },
-    { id: 3, name: "Lê Văn C", avatar: "/assets/user3.jpg", status: "online" },
-    { id: 4, name: "Phạm Thị D", avatar: "/assets/user4.jpg", status: "offline" },
-    { id: 5, name: "Hoàng Văn E", avatar: "/assets/user5.jpg", status: "online" },
-    { id: 6, name: "Ngô Thị F", avatar: "/assets/user6.jpg", status: "online" },
-  ];
 
   const filteredFriends = friends.filter(friend => {
     const matchesSearch = friend.name.toLowerCase().includes(searchQuery.toLowerCase());
