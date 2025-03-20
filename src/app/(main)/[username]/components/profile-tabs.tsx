@@ -55,7 +55,7 @@ export default function ProfileTabs({ user }: ProfileTabsProps) {
   return (
     <div className="sticky top-[60px] bg-white dark:bg-zinc-950 z-10 border-t border-b border-gray-200 dark:border-zinc-800 px-1 sm:px-2 md:px-0 w-full">
       <div className="max-w-4xl mx-auto overflow-x-auto scrollbar-hide">
-        <div className="flex min-w-max">
+        <div className="flex min-w-max justify-around">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path ||
               (tab.path === `${basePath}/timeline` && pathname === basePath);

@@ -42,7 +42,6 @@ export default function ProfileMusicPicker() {
             });
 
             toast({ title: "Bài hát sẽ hiển thị trên hồ sơ", description: `${track.name}` });
-
             setIsOpen(false);
         } catch (error) {
             console.error("Lỗi khi lưu bài hát:", error);

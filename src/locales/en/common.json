@@ -31,6 +31,10 @@
       "timeline": "Timeline",
       "posts": "Posts",
       "about": "About",
+      "friends" : {
+        "friendsTab" : "Friends",
+        "friends" : "Friends"
+      },
       "photos": "Photos",
       "addFriend": "Add Friend",
       "message": "Message",

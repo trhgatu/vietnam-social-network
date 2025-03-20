@@ -30,12 +30,9 @@ export default function CoverPhoto({ user }: CoverPhotoProps) {
             <span className="text-sm sm:text-base">No cover photo</span>
           </div>
         )}
-
-        {/* Gradient overlay to ensure text is readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
       </div>
 
-      {/* Update cover photo button - Only for own profile */}
       {isOwnProfile && (
         <button
           className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 bg-gray-800 bg-opacity-70 text-white p-1.5 sm:p-2 rounded-full z-10

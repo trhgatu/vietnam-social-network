@@ -32,6 +32,10 @@
       "posts": "Bài viết",
       "about": "Giới thiệu",
       "photos": "Ảnh",
+      "friends" : {
+        "friendsTab" : "Bạn bè",
+        "friends" : "Bạn bè"
+      },
       "addFriend": "Thêm bạn bè",
       "message": "Nhắn tin",
       "updateCover": "Cập nhật ảnh bìa",
