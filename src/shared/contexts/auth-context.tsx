@@ -4,7 +4,7 @@ import { User } from "../types/user";
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginUser, logoutUser, refreshToken, setAuthToken } from "@/shared/services/auth-services";
 import { getToken, setToken } from "@/shared/utils/jwt-helper";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import LoadingPage from "@/shared/components/loading-page/loading-page";
 
 export interface AuthContextType {
@@ -26,12 +26,14 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: true,
   token: null,
 });
+const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [token, setTokenState] = useState<string | null>(null);
   const router = useRouter();
+  const pathName = usePathname();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -69,7 +71,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
   }, []);
-
+  useEffect(() => {
+    if (!isLoading) {
+      if (user && publicRoutes.includes(pathName)) {
+        router.replace("/home");
+      }
+    }
+  }, [user, isLoading, pathName, router]);
   const login = async (newToken: string): Promise<boolean> => {
     try {
       setToken(newToken);
@@ -103,6 +111,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  if (isLoading || (user && publicRoutes.includes(pathName))) {
+    return <LoadingPage />;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -115,7 +127,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         token,
       }}
     >
-      {isLoading ? <LoadingPage /> : children}
+      {children}
+
     </AuthContext.Provider>
   );
 };
