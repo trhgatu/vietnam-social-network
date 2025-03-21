@@ -18,7 +18,6 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useAuth } from '@/shared/contexts/auth-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { removeToken } from '@/shared/utils/jwt-helper';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +28,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import { logoutUser } from '@/shared/services/auth-services';
 
 export function Header() {
   const { t } = useTranslation('common');
@@ -38,12 +38,11 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleLogout = () => {
-    removeToken();
-    setUser(null);
+    logoutUser();
+    setUser(null)
     router.push('/sign-in');
   };
 
-  // Mobile nav items
   const mobileNavItems = [
     { icon: <Home className="h-6 w-6" />, label: t('navigation.home'), href: '/', active: pathname === '/' },
     { icon: <Users2 className="h-6 w-6" />, label: t('navigation.friends'), href: '/friends', active: pathname === '/friends' },

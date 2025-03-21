@@ -68,7 +68,7 @@ export function FriendsList() {
         <div className="space-y-3">
           {filteredFriends.length > 0 ? (
             filteredFriends.map((friend) => (
-              <div key={friend.id} className="flex flex-wrap items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
+              <div key={friend._id} className="flex flex-wrap items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
                 <div className="flex items-center gap-3 mb-2 sm:mb-0">
                   <Avatar className="h-10 w-10 border">
                     <AvatarImage src={friend.avatar} />

@@ -5,14 +5,14 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import ButtonGoogle from "@/shared/components/button-google";
-import ButtonApple from "@/shared/components/button-apple";
-import ButtonFacebook from "@/shared/components/button-facebook";
+import ButtonGoogle from "@/components/button-google";
+import ButtonApple from "@/components/button-apple";
+import ButtonFacebook from "@/components/button-facebook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/shared/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import instance from "@/api-client/axios-client";
 import { useToast } from "@/hooks/use-toast";
+import { apiLoginUser } from "@/api-client";
 
 export function SignInPage() {
   const { toast } = useToast();
@@ -29,18 +29,27 @@ export function SignInPage() {
     setError(null);
 
     try {
-      const response = await instance.post("/auth/login", { email, password });
-      if (response.data.success) {
-        login(response.data.token)
-        toast({
-          description: `${response?.data.message}`
-        })
-        router.push('/home');
+      const response = await apiLoginUser(email, password);
+      if (response) {
+        const { accessToken, refreshToken, success, message } = response;
+
+        if (success && accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+          if (refreshToken) {
+            localStorage.setItem("refreshToken", refreshToken);
+          }
+          await login(accessToken);
+
+          toast({ description: message || "Login successful!" });
+          router.push('/home');
+        } else {
+          setError(message || "Login failed.");
+        }
       } else {
-        setError(response.data.message);
+        setError("Login failed.");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError("Email hoặc mật khẩu không đúng.");
     } finally {
       setLoading(false);

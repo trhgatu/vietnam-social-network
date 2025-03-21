@@ -2,8 +2,12 @@ import type { User } from "./user";
 
 export interface AuthResponse {
   user: User;
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  success: boolean;
+  message?: string;
 }
+
 
 export interface AuthInput {
   email: string;

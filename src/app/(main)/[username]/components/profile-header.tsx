@@ -13,8 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ProfileMusicPicker from "@/app/(main)/[username]/components/profile-music-picker";
-import FavoriteSong from "@/app/(main)/[username]/components/favorite-song";
+import ProfileMusicPicker from "./profile-music-picker";
+import FavoriteSong from "./favorite-song";
 
 interface ProfileHeaderProps {
   user: User | null;

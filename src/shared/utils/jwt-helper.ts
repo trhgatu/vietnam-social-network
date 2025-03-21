@@ -1,5 +1,3 @@
-import { refreshToken, setAuthToken } from "../services/auth-services";
-
 interface DecodedToken {
   exp: number;
   iat: number;
@@ -9,23 +7,18 @@ interface DecodedToken {
 }
 
 export const getToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
-  }
-  return null;
+  return typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 };
 
 export const setToken = (token: string): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('token', token);
-    setAuthToken(token);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("accessToken", token);
   }
 };
 
 export const removeToken = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('token');
-    setAuthToken(null);
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("accessToken");
   }
 };
 
@@ -50,29 +43,5 @@ export const decodeToken = (token: string): DecodedToken | null => {
 export const isTokenExpired = (token: string): boolean => {
   const decoded = decodeToken(token);
   if (!decoded) return true;
-
-  // Get current time in seconds
-  const currentTime = Math.floor(Date.now() / 1000);
-
-  // Check if token is expired (with 60 seconds buffer)
-  return decoded.exp < currentTime + 60;
-};
-
-export const getTokenData = (): DecodedToken | null => {
-  const token = getToken();
-  if (!token) return null;
-  return decodeToken(token);
-};
-
-export const validateAndRefreshToken = async (): Promise<boolean> => {
-  const token = getToken();
-  if (!token) return false;
-
-  if (isTokenExpired(token)) {
-    // Try to refresh the token
-    const refreshResult = await refreshToken();
-    return !!refreshResult?.token;
-  }
-
-  return true;
+  return decoded.exp < Math.floor(Date.now() / 1000) + 60;
 };
