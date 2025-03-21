@@ -9,7 +9,7 @@ import { Track, TrackResponse } from "@/shared/types/track";
 import { toast } from "@/hooks/use-toast";
 
 export default function ProfileMusicPicker() {
-    const { user, token } = useAuth();
+    const { user } = useAuth();
     const [searchTerm, setSearchTerm] = useState("");
     const [tracks, setTracks] = useState<Track[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,6 @@ export default function ProfileMusicPicker() {
             if (!user) throw new Error("User not authenticated");
 
             const res = await instance.get<TrackResponse>("spotify/search", {
-                headers: { Authorization: `Bearer ${token}` },
                 params: { query: searchTerm },
                 withCredentials: true,
             });
