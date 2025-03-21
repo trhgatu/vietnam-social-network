@@ -3,9 +3,9 @@ import Link from "next/link"
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import ButtonGoogle from '@/shared/components/button-google'
-import ButtonApple from '@/shared/components/button-apple'
-import ButtonFacebook from '@/shared/components/button-facebook'
+import ButtonGoogle from '@/components/button-google'
+import ButtonApple from '@/components/button-apple'
+import ButtonFacebook from '@/components/button-facebook'
 import {
   Card,
   CardContent,
