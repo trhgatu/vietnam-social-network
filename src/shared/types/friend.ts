@@ -10,6 +10,7 @@ export interface Friend {
   coverPhoto?: string;
   bio?: string;
   location?: string;
+  status: string;
   website?: string;
   role: "user" | "admin";
   favoriteSong: Track;
