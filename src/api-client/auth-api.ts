@@ -6,18 +6,20 @@ export const fetchUser = async (): Promise<User | null> => {
   return response?.user || null;
 };
 
-export const refreshToken = async (): Promise<boolean> => {
+export const refreshToken = async (): Promise<{ accessToken: string } | null> => {
   try {
     const res = await authService.refreshToken();
-    if (res?.success) {
-      return true;
+    if (res?.success && res?.accessToken) {
+      console.info("✅ Token refreshed!");
+      return { accessToken: res.accessToken };
     }
   } catch (error) {
-    console.error("Error refreshing token:", error);
+    console.error("❌ Error refreshing token:", error);
   }
   await logoutUser();
-  return false;
+  return null;
 };
+
 
 export const removeUser = (): void => {
   if (typeof window !== "undefined") {

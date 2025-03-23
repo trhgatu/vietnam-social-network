@@ -31,6 +31,15 @@ class AuthService {
       return null;
     }
   }
+  async getAccessToken(): Promise<string | null> {
+    try {
+      const response = await instance.get<AuthResponse>(`${this.baseUrl}/auth/token`, { withCredentials: true });
+      return response.data.accessToken || null;
+    } catch (error) {
+      console.warn("⚠ Không thể lấy accessToken:", error);
+      return null;
+    }
+  }
 
   async refreshToken(): Promise<AuthResponse | null> {
     try {

@@ -1,5 +1,7 @@
+import Cookies from "js-cookie";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
-import { authService } from "@/shared/services/auth-services";
+import { refreshToken } from "@/api-client/auth-api";
+import { logoutUser } from "@/api-client/auth-api";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
@@ -19,9 +21,10 @@ let failedQueue: FailedRequest[] = [];
 const processQueue = (error: AxiosError | null, token: string | null) => {
   failedQueue.forEach(({ resolve, reject, config }) => {
     if (token) {
-      resolve(instance(config)); // Gửi lại request nếu refresh thành công
+      config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+      resolve(instance(config));
     } else {
-      reject(error); // Báo lỗi nếu refresh thất bại
+      reject(error);
     }
   });
 
@@ -45,21 +48,26 @@ instance.interceptors.response.use(
 
       try {
         console.warn("⚠ Token expired. Attempting refresh...");
-        const refreshed = await authService.refreshToken();
+        const refreshed = await refreshToken();
 
-        if (refreshed?.refreshToken) {
-          console.info("✅ Token refreshed. Retrying failed requests...");
-          processQueue(null, refreshed.refreshToken);
+        if (refreshed?.accessToken) {
+          Cookies.set('accessToken', refreshed.accessToken, { expires: 1 });
+          processQueue(null, refreshed.accessToken);
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            Authorization: `Bearer ${refreshed.accessToken}`,
+          };
+
           return instance(originalRequest);
         } else {
-          console.error("❌ Refresh token failed. Logging out...");
+          console.error("Refresh token failed. Logging out...");
           processQueue(error, null);
-          await authService.logout();
+          await logoutUser();
         }
       } catch (refreshError) {
-        console.error("❌ Refresh request error:", refreshError);
+        console.error("Refresh request error:", refreshError);
         processQueue(refreshError as AxiosError, null);
-        await authService.logout();
+        await logoutUser();
       } finally {
         isRefreshing = false;
       }

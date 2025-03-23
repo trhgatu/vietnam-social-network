@@ -14,6 +14,7 @@ export interface User {
   role: "user" | "admin";
   favoriteSong: Track;
   friendsCount: number
+  accessToken?: string;
 }
 
 export interface FriendRequest {

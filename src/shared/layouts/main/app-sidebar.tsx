@@ -156,8 +156,6 @@ export function AppSidebar() {
                 </Link>
               );
             })}
-
-            {/* Theme toggle - Desktop only */}
             <button
               className="hidden md:flex items-center justify-center lg:justify-start py-3 px-3 lg:px-4 gap-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors rounded-lg md:mt-1"
               onClick={() => setTheme(isDarkMode ? "light" : "dark")}
@@ -170,8 +168,6 @@ export function AppSidebar() {
               )}
               <span className="hidden lg:inline">{isDarkMode ? t('nav.lightMode') : t('nav.darkMode')}</span>
             </button>
-
-            {/* Logout Button - Desktop only */}
             {user && (
               <button
                 className="hidden md:flex items-center justify-center lg:justify-start py-3 px-3 lg:px-4 gap-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-500 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors rounded-lg"
