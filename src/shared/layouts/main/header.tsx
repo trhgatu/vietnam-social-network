@@ -28,7 +28,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { logoutUser } from '@/shared/services/auth-services';
+import { logoutUser } from '@/api-client';
+import { toast } from '@/hooks/use-toast';
 
 export function Header() {
   const { t } = useTranslation('common');
@@ -40,6 +41,7 @@ export function Header() {
   const handleLogout = () => {
     logoutUser();
     setUser(null)
+    toast({ description: t('auth.logout_success') });
     router.push('/sign-in');
   };
 
@@ -47,8 +49,10 @@ export function Header() {
     { icon: <Home className="h-6 w-6" />, label: t('navigation.home'), href: '/', active: pathname === '/' },
     { icon: <Users2 className="h-6 w-6" />, label: t('navigation.friends'), href: '/friends', active: pathname === '/friends' },
     { icon: <MessageSquare className="h-6 w-6" />, label: t('navigation.messages'), href: '/messages', active: pathname === '/messages' },
-    { icon: <Bell className="h-6 w-6" />, label: t('navigation.notifications'), href: '#', isDropdown: true,
-      hasNotification: true, notification: 3 },
+    {
+      icon: <Bell className="h-6 w-6" />, label: t('navigation.notifications'), href: '#', isDropdown: true,
+      hasNotification: true, notification: 3
+    },
     { icon: <PanelLeft className="h-6 w-6" />, label: t('navigation.menu'), href: '#', isSheet: true }
   ];
 
@@ -69,8 +73,6 @@ export function Header() {
               />
               <span className="hidden sm:block text-lg font-bold">Vietnam Social</span>
             </Link>
-
-            {/* Desktop search bar */}
             <div className="hidden md:flex relative flex-1 ml-4">
               <div className="relative w-full max-w-xs">
                 <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />

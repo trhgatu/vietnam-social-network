@@ -11,7 +11,7 @@ export function useFriends(username: string) {
     const fetchFriends = async () => {
       try {
         setLoading(true);
-        const { data } = await instance.get(`/friends/${username}`);
+        const { data } = await instance.get(`/friends?username=${username}`);
         setFriends(data.data || []);
       } catch (err) {
         setError("Không thể tải danh sách bạn bè");

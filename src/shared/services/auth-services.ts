@@ -1,62 +1,96 @@
-import { apiFetchUser, apiRefreshToken, apiLogoutUser } from "@/api-client";
-import { User } from "@/shared/types";
-import { setToken, removeToken } from "@/shared/utils/jwt-helper";
+import instance from "@/api-client/axios-client";
+import { AuthResponse } from "@/shared/types/auth";
 
-export const fetchUser = async (): Promise<User | null> => {
-  const response = await apiFetchUser();
-  return response?.user || null;
-};
+class AuthService {
+  private baseUrl = "/auth";
 
-export const refreshToken = async (): Promise<boolean> => {
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (!refreshToken) return false;
-
-  try {
-    const res = await apiRefreshToken(refreshToken);
-    if (res?.accessToken) {
-      setToken(res.accessToken);
-      return true;
+  async login(email: string, password: string): Promise<AuthResponse | null> {
+    try {
+      const response = await instance.post<AuthResponse>(`${this.baseUrl}/login`, { email, password });
+      return response.data;
+    } catch (error) {
+      console.error("Login failed:", error);
+      return null;
     }
-  } catch (error) {
-    console.error("Error refreshing token:", error);
   }
 
-  await logoutUser();
-  return false;
-};
-
-export const removeRefreshToken = (): void => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("refreshToken");
+  async logout(): Promise<void> {
+    try {
+      await instance.post(`${this.baseUrl}/logout`, {}, { withCredentials: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   }
-};
 
-export const removeUser = (): void => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("user");
+  async fetchUser(): Promise<AuthResponse | null> {
+    try {
+      const response = await instance.get<AuthResponse>(`${this.baseUrl}/me`, { withCredentials: true });
+      return response.data;
+    } catch (error) {
+      console.error("Fetch user failed:", error);
+      return null;
+    }
   }
-};
 
-
-export const loginUser = async (token: string): Promise<User | null> => {
-  setToken(token);
-  const user = await fetchUser();
-  if (user) {
-    localStorage.setItem("user", JSON.stringify(user));
+  async refreshToken(): Promise<AuthResponse | null> {
+    try {
+      const response = await instance.post<AuthResponse>(`${this.baseUrl}/refresh-token`, {}, { withCredentials: true });
+      return response.data;
+    } catch (error) {
+      console.error("Refresh token failed:", error);
+      return null;
+    }
   }
-  return user;
-};
 
-
-export const logoutUser = async (): Promise<void> => {
-  try {
-    await apiLogoutUser();
-  } catch (error) {
-    console.error("Logout error:", error);
-  } finally {
-    removeToken();
-    removeUser();
-    removeRefreshToken();
+  async register(email: string, name: string, password: string): Promise<AuthResponse | null> {
+    try {
+      const response = await instance.post<AuthResponse>(`${this.baseUrl}/register`, { email, name, password });
+      return response.data;
+    } catch (error) {
+      console.error("Register failed:", error);
+      return null;
+    }
   }
-};
 
+  async sendOTP(email: string): Promise<{ success: boolean; message: string } | null> {
+    try {
+      const response = await instance.post(`${this.baseUrl}/register/send-otp`, { email });
+      return response.data;
+    } catch (error) {
+      console.error("Send OTP failed:", error);
+      return null;
+    }
+  }
+
+  async verifyOTP(email: string, otp: string): Promise<{ success: boolean; message: string } | null> {
+    try {
+      const response = await instance.post(`${this.baseUrl}/register/verify-otp`, { email, otp });
+      return response.data;
+    } catch (error) {
+      console.error("Verify OTP failed:", error);
+      return null;
+    }
+  }
+
+  async changePassword(oldPassword: string, newPassword: string): Promise<{ success: boolean; message: string } | null> {
+    try {
+      const response = await instance.post(`${this.baseUrl}/change-password`, { oldPassword, newPassword }, { withCredentials: true });
+      return response.data;
+    } catch (error) {
+      console.error("Change password failed:", error);
+      return null;
+    }
+  }
+
+  async resetPassword(email: string, otp: string, newPassword: string): Promise<{ success: boolean; message: string } | null> {
+    try {
+      const response = await instance.post(`${this.baseUrl}/reset-password`, { email, otp, newPassword });
+      return response.data;
+    } catch (error) {
+      console.error("Reset password failed:", error);
+      return null;
+    }
+  }
+}
+
+export const authService = new AuthService();

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,19 +9,24 @@ import ButtonGoogle from "@/components/button-google";
 import ButtonApple from "@/components/button-apple";
 import ButtonFacebook from "@/components/button-facebook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/shared/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { apiLoginUser } from "@/api-client";
+import { useAuth } from "@/shared/contexts/auth-context";
 
 export function SignInPage() {
+  const { login, isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/home");
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,28 +34,16 @@ export function SignInPage() {
     setError(null);
 
     try {
-      const response = await apiLoginUser(email, password);
-      if (response) {
-        const { accessToken, refreshToken, success, message } = response;
-
-        if (success && accessToken) {
-          localStorage.setItem("accessToken", accessToken);
-          if (refreshToken) {
-            localStorage.setItem("refreshToken", refreshToken);
-          }
-          await login(accessToken);
-
-          toast({ description: message || "Login successful!" });
-          router.push('/home');
-        } else {
-          setError(message || "Login failed.");
-        }
+      const success = await login(email, password);
+      if (success) {
+        toast({ description: "Đăng nhập thành công!" });
+        router.push("/home");
       } else {
-        setError("Login failed.");
+        setError("Email hoặc mật khẩu không đúng.");
       }
     } catch (err) {
-      console.log(err);
-      setError("Email hoặc mật khẩu không đúng.");
+      console.error("Login error:", err);
+      setError("Có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
@@ -73,6 +66,7 @@ export function SignInPage() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -83,6 +77,7 @@ export function SignInPage() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
 

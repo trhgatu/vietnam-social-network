@@ -16,30 +16,36 @@ export const useAuthActions = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        try {
-          const idToken = await currentUser.getIdToken();
-          const res = await instance.post("/auth/firebase-login", { idToken });
-
-          if (res.data.success) {
-            setUser(res.data.user);
-            localStorage.setItem("user", JSON.stringify(res.data.user));
-            localStorage.setItem("accessToken", res.data.token);
-            router.push('/home');
-          }
-        } catch (error) {
-          console.error("Firebase login failed:", error);
-        }
-      } else {
+      if (!currentUser) {
         setUser(null);
-        localStorage.removeItem("user");
-        localStorage.removeItem("accessToken");
+        setLoading(false);
+        return;
+      }
+      if (window.location.pathname === "/sign-in") {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await instance.post("/auth/firebase-login", { idToken });
+
+        if (res.data.success) {
+          setUser(res.data.user);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+        }
+      } catch (error) {
+        console.error("Firebase login failed:", error);
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [setUser, router]);
+  }, [setUser]);
+
+
+
 
   const loginWithGoogle = async () => {
     try {
@@ -53,7 +59,6 @@ export const useAuthActions = () => {
       if (res.data.success) {
         setUser(res.data.user);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        localStorage.setItem("accessToken", res.data.accessToken);
         router.push('/home');
       }
     } catch (error) {
@@ -65,7 +70,6 @@ export const useAuthActions = () => {
     await signOut(auth);
     setUser(null);
     localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
     router.push('/sign-in');
   };
 

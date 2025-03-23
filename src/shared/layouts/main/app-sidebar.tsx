@@ -89,7 +89,7 @@ export function AppSidebar() {
       <div className="flex md:flex-col h-full">
         <div className="hidden md:flex flex-col p-3 lg:p-4 lg:pb-2">
           <Link
-            href={user ? `/${user.username}` : "/signin"}
+            href={user ? `/${user.username}` : "/sign-in"}
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors"
           >
             {user ? (

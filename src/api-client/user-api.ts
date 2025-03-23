@@ -1,5 +1,5 @@
 import { User } from "@/shared/types/user";
-import { userService } from "@/shared/services/user-service";
+import { userService } from "@/shared/services/user-services";
 
 export async function fetchUserByUsername(username: string): Promise<User | null> {
   try {

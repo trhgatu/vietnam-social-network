@@ -1,4 +1,4 @@
-import { ApiService } from './api-service';
+import instance from '@/api-client/axios-client';
 import { User } from '@/shared/types/user';
 
 interface UserProfileUpdateData {
@@ -23,15 +23,13 @@ interface UserSearchParams {
   page?: number;
 }
 
-class UserService extends ApiService<User> {
-  constructor() {
-    super('/users');
-  }
+class UserService {
+  private baseUrl = '/users';
 
   async getUserByUsername(username: string): Promise<User | null> {
     try {
-      const result = await this.customRequest<User>('get', `/${username}`);
-      return result;
+      const response = await instance.get(`${this.baseUrl}/${username}`);
+      return response.data;
     } catch (error) {
       console.error(`Error fetching user by username ${username}:`, error);
       return null;
@@ -40,8 +38,8 @@ class UserService extends ApiService<User> {
 
   async updateProfile(userId: string, data: UserProfileUpdateData): Promise<User | null> {
     try {
-      const result = await this.update(userId, data);
-      return result;
+      const response = await instance.put(`${this.baseUrl}/${userId}`, data);
+      return response.data;
     } catch (error) {
       console.error('Error updating profile:', error);
       return null;
@@ -53,17 +51,12 @@ class UserService extends ApiService<User> {
       const formData = new FormData();
       formData.append('avatar', file);
 
-      const response = await fetch(`${this.baseUrl}/${userId}/avatar`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include'
+      const response = await instance.put(`${this.baseUrl}/${userId}/avatar`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to update avatar');
-      }
-
-      return response.json();
+      return response.data;
     } catch (error) {
       console.error('Error updating avatar:', error);
       return null;
@@ -75,17 +68,12 @@ class UserService extends ApiService<User> {
       const formData = new FormData();
       formData.append('coverPhoto', file);
 
-      const response = await fetch(`${this.baseUrl}/${userId}/cover-photo`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include'
+      const response = await instance.put(`${this.baseUrl}/${userId}/cover-photo`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to update cover photo');
-      }
-
-      return response.json();
+      return response.data;
     } catch (error) {
       console.error('Error updating cover photo:', error);
       return null;
@@ -94,12 +82,8 @@ class UserService extends ApiService<User> {
 
   async changePassword(userId: string, data: PasswordChangeData): Promise<{ success: boolean; message: string }> {
     try {
-      const result = await this.customRequest<{ success: boolean; message: string }>(
-        'put',
-        `/${userId}/password`,
-        data
-      );
-      return result;
+      const response = await instance.put(`${this.baseUrl}/${userId}/password`, data);
+      return response.data;
     } catch (error) {
       console.error('Error changing password:', error);
       return { success: false, message: 'Failed to change password' };
@@ -108,8 +92,8 @@ class UserService extends ApiService<User> {
 
   async searchUsers(params: UserSearchParams): Promise<User[]> {
     try {
-      const result = await this.customRequest<User[]>('get', '/search', null, params as Record<string, unknown>);
-      return result;
+      const response = await instance.get(`${this.baseUrl}/search`, { params });
+      return response.data;
     } catch (error) {
       console.error('Error searching users:', error);
       return [];
@@ -118,8 +102,8 @@ class UserService extends ApiService<User> {
 
   async getSuggestedUsers(limit = 10): Promise<User[]> {
     try {
-      const result = await this.customRequest<User[]>('get', '/suggested', null, { limit });
-      return result;
+      const response = await instance.get(`${this.baseUrl}/suggested`, { params: { limit } });
+      return response.data;
     } catch (error) {
       console.error('Error getting suggested users:', error);
       return [];

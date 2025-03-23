@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchUser, loginUser, logoutUser, refreshToken } from "@/shared/services/auth-services";
-import { getToken } from "@/shared/utils/jwt-helper";
+import { authService } from "@/shared/services/auth-services";
+import { loginUser, logoutUser, refreshToken, fetchUser } from "@/api-client";
 import { usePathname, useRouter } from "next/navigation";
 import LoadingPage from "@/shared/components/loading-page/loading-page";
 import { User } from "@/shared/types/user";
@@ -10,7 +10,7 @@ import { User } from "@/shared/types/user";
 export interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  login: (token: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -37,27 +37,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const initializeAuth = async () => {
       setIsLoading(true);
 
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      } else {
-        const storedToken = getToken();
-        if (storedToken) {
-          const refreshed = await refreshToken();
-          if (refreshed) {
-            const userData = await fetchUser();
-            if (userData) {
-              setUser(userData);
-              localStorage.setItem("user", JSON.stringify(userData));
+      try {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          const hasRefreshToken = document.cookie.includes("refreshToken");
+          if (hasRefreshToken) {
+            const refreshed = await refreshToken();
+
+            if (refreshed) {
+              const userData = await fetchUser();
+              if (userData) {
+                setUser(userData);
+                localStorage.setItem("user", JSON.stringify(userData));
+              }
+            } else {
+              console.warn("Refresh token không hợp lệ, đăng xuất...");
+              await authService.logout();
             }
-          } else {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+
           }
         }
+      } catch (error) {
+        console.error("Lỗi khi khởi tạo auth:", error);
+      } finally {
+        setIsLoading(false);
       }
       setIsLoading(false);
     };
+
     initializeAuth();
   }, []);
 
@@ -67,11 +76,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, isLoading, pathName, router]);
 
-  const login = async (newToken: string): Promise<boolean> => {
-    const userData = await loginUser(newToken);
-    if (userData) {
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    const user = await loginUser(email, password);
+    if (user) {
+      setUser(user);
       router.push("/home");
       return true;
     }
@@ -81,11 +90,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async (): Promise<void> => {
     await logoutUser();
     setUser(null);
-    localStorage.removeItem("user");
     router.push("/sign-in");
   };
 
-  if (isLoading || (user && publicRoutes.includes(pathName))) {
+
+  if (isLoading) {
     return <LoadingPage />;
   }
 
