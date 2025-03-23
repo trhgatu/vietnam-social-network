@@ -22,6 +22,6 @@
 - **Ant Design**
 - **Firebase Authentication**
 - **Websocket**
-- **Axios & SWR** (gọi API RESTful)
+- **Axios** (gọi API RESTful)
 
 
