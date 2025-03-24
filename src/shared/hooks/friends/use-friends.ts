@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import instance from "@/api-client/axios-client";
+import { getFriends } from "@/api-client/friends-api";
 import { Friend } from "@/shared/types/friend";
 
 export function useFriends(username: string) {
@@ -11,8 +11,8 @@ export function useFriends(username: string) {
     const fetchFriends = async () => {
       try {
         setLoading(true);
-        const { data } = await instance.get(`/friends?username=${username}`);
-        setFriends(data.data || []);
+        const friends = await getFriends(username);
+        setFriends(friends || []);
       } catch (err) {
         setError("Không thể tải danh sách bạn bè");
         console.error("Error fetching friends:", err);

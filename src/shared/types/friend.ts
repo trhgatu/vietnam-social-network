@@ -15,5 +15,4 @@ export interface Friend {
   role: "user" | "admin";
   favoriteSong: Track;
   friendsCount: number;
-  isOnline: boolean,
 }
