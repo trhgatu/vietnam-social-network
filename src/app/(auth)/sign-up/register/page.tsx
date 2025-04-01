@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { apiRegisterUser } from "@/api-client";
+import { registerUser } from "@/api-client";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -45,7 +45,7 @@ export default function RegisterPage() {
         }
 
         try {
-            const res = await apiRegisterUser(email, name, password);
+            const res = await registerUser(email, name, password);
             if (res?.success) {
                 toast({ description: "Account created successfully! Please sign in." });
                 router.push("/sign-in");

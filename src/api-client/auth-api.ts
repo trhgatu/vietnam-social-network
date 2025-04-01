@@ -1,5 +1,5 @@
 import { authService } from "@/shared/services/auth-services";
-import { User } from "@/shared/types";
+import { User, UserResponse } from "@/shared/types";
 
 export const fetchUser = async (): Promise<User | null> => {
   const response = await authService.fetchUser();
@@ -55,19 +55,26 @@ export const logoutUser = async (): Promise<void> => {
 };
 
 
-export const registerUser = async (email: string, name: string, password: string): Promise<User | null> => {
+export const registerUser = async (email: string, name: string, password: string): Promise<UserResponse | null> => {
   try {
     const response = await authService.register(email, name, password);
     if (response?.success) {
-      localStorage.setItem("user", JSON.stringify(response.user));
-      return response.user;
+      return {
+        user: response.user,
+        success: true,
+        message: "Đăng ký thành công"
+      };
+    } else {
+      console.error("Đăng ký thất bại:", response?.message || "Không có thông báo");
+      return null;
     }
-    return null;
   } catch (error) {
-    console.error("Register error:", error);
+    console.error("Lỗi khi đăng ký:", error);
     return null;
   }
 };
+
+
 
 
 export const sendOTPForRegistration = async (email: string): Promise<{ success: boolean; message: string } | null> => {

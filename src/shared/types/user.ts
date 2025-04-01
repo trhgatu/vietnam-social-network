@@ -16,11 +16,22 @@ export interface User {
   friendsCount: number
   accessToken?: string;
 }
-
-export interface FriendRequest {
+export interface UserProfile {
   _id: string;
-  fromUser: User | string;
-  toUser: User | string;
-  status: 'pending' | 'accepted' | 'declined';
-  createdAt: string;
+  name: string;
+  username: string;
+  nickname?: string;
+  email: string;
+  avatar?: string;
+  coverPhoto?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  role: "user" | "admin";
+  friendsCount: number
+}
+export interface UserResponse {
+  user: User;
+  success: boolean;
+  message: string;
 }

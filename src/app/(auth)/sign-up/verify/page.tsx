@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { apiVerifyOTP, apiSendOTP } from "@/api-client";
+import { verifyOTPForRegistration, sendOTPForRegistration } from "@/api-client";
 
 export default function VerifyOTPPage() {
   const searchParams = useSearchParams();
@@ -31,7 +31,7 @@ export default function VerifyOTPPage() {
     setError(null);
 
     try {
-      const res = await apiVerifyOTP(email, otp);
+      const res = await verifyOTPForRegistration(email, otp);
       if (res?.success) {
         toast({ description: "OTP verified successfully!" });
         router.push(`/sign-up/register?email=${encodeURIComponent(email)}`);
@@ -51,7 +51,7 @@ export default function VerifyOTPPage() {
     setError(null);
 
     try {
-      const res = await apiSendOTP(email);
+      const res = await sendOTPForRegistration(email);
       if (res?.success) {
         toast({ description: "A new OTP has been sent to your email!" });
       } else {
