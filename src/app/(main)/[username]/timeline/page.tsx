@@ -1,16 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/shared/contexts/auth-context";
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
-  Image as ImageIcon,
-  Smile,
-  Calendar,
   MoreHorizontal,
   MapPin,
   ThumbsUp,
@@ -25,22 +23,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
 import Image from "next/image";
+import { PostForm } from "@/app/(main)/home/components/post-form";
+import { fetchPostsByUsername } from "@/api-client/posts-api";
+import { Post } from "@/shared/types";
+import { timeAgo } from "@/shared/utils/timeAgo";
 
 export default function TimelinePage() {
   const { t } = useTranslation("common");
   const { user } = useAuth();
   const { username } = useParams();
-
-  // Check if this is the current user's profile
   const isOwnProfile = user?.username === username;
+  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // State for like functionality
-  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({
-    "post1": false,
-    "post2": false
-  });
+  useEffect(() => {
+    const loadPosts = async () => {
+      if (username) {
+        try {
+          setLoading(true);
+          const fetchedPosts = await fetchPostsByUsername(username as string);
+          setPosts(fetchedPosts);
+          console.log(fetchedPosts)
+        } catch (error) {
+          console.error("Lỗi khi tải bài viết", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    loadPosts();
+  }, [username]);
 
   const handleLike = (postId: string) => {
     setLikedPosts(prev => ({
@@ -48,95 +62,35 @@ export default function TimelinePage() {
       [postId]: !prev[postId]
     }));
   };
-
-  // Mock posts data
-  const posts = [
-    {
-      id: "post1",
-      author: {
-        name: "Nguyen Van A",
-        username: "nguyenvana",
-        avatar: "https://avatar.iran.liara.run/public/boy"
-      },
-      content: "Hôm nay thời tiết thật đẹp! #vietnam #hanoi",
-      image: "https://images.unsplash.com/photo-1599707254554-027aeb4deacd",
-      location: "Hà Nội",
-      timeAgo: "2 giờ trước",
-      likes: 42,
-      comments: 12,
-      shares: 3
-    },
-    {
-      id: "post2",
-      author: {
-        name: "Tran Thi B",
-        username: "tranthib",
-        avatar: "https://avatar.iran.liara.run/public/girl"
-      },
-      content: "Vừa hoàn thành dự án mới! Rất vui khi được làm việc với đội ngũ tuyệt vời. 💻 #coding #developer",
-      image: "https://images.unsplash.com/photo-1508830524289-0adcbe822b40?q=80&w=2025&auto=format&fit=crop",
-      location: "Hồ Chí Minh",
-      timeAgo: "1 ngày trước",
-      likes: 89,
-      comments: 23,
-      shares: 7
-    }
-  ];
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
-      {/* Create Post Section - Only show on own profile */}
       {isOwnProfile && (
-        <Card className="mb-6 shadow-sm bg-white dark:bg-zinc-950">
-          <CardHeader className="pb-3">
-            <h2 className="text-lg font-medium">{t("post.create")}</h2>
-          </CardHeader>
-          <CardContent className="pb-3">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={user?.avatar} alt={user?.name} />
-                <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <div className="bg-gray-100 dark:bg-zinc-800 rounded-full px-4 py-2.5 flex-1 text-gray-500 dark:text-gray-400 cursor-pointer hover:bg-gray-200 dark:hover:bg-zinc-700 transition duration-200">
-                {t("post.whatThinking")}
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="border-t pt-3 flex justify-between flex-wrap">
-            <Button variant="ghost" size="sm" className="gap-2 text-gray-600 dark:text-gray-300">
-              <ImageIcon className="h-5 w-5" />
-              <span className="hidden sm:inline">{t("post.photoVideo")}</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="gap-2 text-gray-600 dark:text-gray-300">
-              <Smile className="h-5 w-5" />
-              <span className="hidden sm:inline">{t("post.feeling")}</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="gap-2 text-gray-600 dark:text-gray-300">
-              <Calendar className="h-5 w-5" />
-              <span className="hidden sm:inline">{t("post.event")}</span>
-            </Button>
-          </CardFooter>
-        </Card>
+        <PostForm />
       )}
 
       {/* Posts Feed */}
       <div className="space-y-6">
         {posts.map(post => {
-          const isLiked = likedPosts[post.id];
+          const isLiked = likedPosts[post._id];
 
           return (
-            <Card key={post.id} className="shadow-sm overflow-hidden bg-white dark:bg-zinc-950">
+            <Card key={post._id} className="shadow-sm overflow-hidden bg-white dark:bg-zinc-950">
               <CardHeader className="pb-3 pt-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={post.author.avatar} alt={post.author.name} />
-                      <AvatarFallback>{post.author.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      {post.authorId && (
+                        <AvatarImage src={post.authorId.avatar} alt={post.authorId.name} />
+                      )}
+                      <AvatarFallback>{post.authorId?.name.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-medium">{post.author.name}</p>
+                      <p className="font-medium">{post.authorId?.name}</p>
                       <div className="flex items-center text-xs text-gray-500">
-                        <span>{post.timeAgo}</span>
+                        <span>{timeAgo(post.createdAt)}</span>
                         {post.location && (
                           <>
                             <span className="mx-1">•</span>
@@ -193,7 +147,7 @@ export default function TimelinePage() {
                         <Heart className="h-3 w-3 text-white" />
                       </div>
                     </div>
-                    <span>{isLiked ? post.likes + 1 : post.likes}</span>
+                    <span>{isLiked ? (Array.isArray(post.likes) ? post.likes.length + 1 : (post.likes ?? 0) + 1) : (Array.isArray(post.likes) ? post.likes.length : post.likes ?? 0)}</span>
                   </div>
                   <div className="flex gap-3">
                     <span>{post.comments} {t("post.comments")}</span>
@@ -202,14 +156,12 @@ export default function TimelinePage() {
                 </div>
 
                 <Separator />
-
-                {/* Action buttons */}
                 <div className="py-1 px-2 flex justify-between">
                   <Button
                     variant="ghost"
                     size="sm"
                     className={`flex-1 gap-2 ${isLiked ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300'}`}
-                    onClick={() => handleLike(post.id)}
+                    onClick={() => handleLike(post._id)}
                   >
                     <ThumbsUp className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
                     <span className="hidden xs:inline">{t("post.like")}</span>

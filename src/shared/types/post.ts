@@ -7,9 +7,18 @@ export type Post = {
     media?: string[];
     createdAt: string;
     isAI: boolean;
+    location?: string;
+    image?: string;
+    likes?: string[];
+    comments?: string[];
+    tags?: string[];
+    feelings?: string[];
+    status: "public" | "private" | "friends";
+    updatedAt?: string;
+    shares: string[];
+    isLiked?: boolean;
+    isSaved?: boolean;
 };
-
-
 
 export type CreatePostPayload = {
     content: string;

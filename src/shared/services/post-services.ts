@@ -14,7 +14,15 @@ class PostService {
         }
     }
 
-
+    async getPostByUsername(username: string, params?: { page?: number; limit?: number }): Promise<Post[]> {
+        try {
+            const response = await instance.get(`${this.baseUrl}/user/${username}`, { params });
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching posts by username:', error);
+            return [];
+        }
+    }
     async getPostById(postId: string): Promise<Post | null> {
         try {
             const response = await instance.get(`${this.baseUrl}/${postId}`);

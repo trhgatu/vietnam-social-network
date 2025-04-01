@@ -10,7 +10,16 @@ export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
     return [];
   }
 }
-
+export async function fetchPostsByUsername(username: string, page = 1, limit = 10): Promise<Post[]> {
+  try {
+    const posts = await postService.getPostByUsername(username, { page, limit });
+    return posts;
+  }
+  catch (error) {
+    console.error("Lỗi khi lấy danh sách bài viết của người dùng:", error);
+    return [];
+  }
+}
 export async function fetchPostById(postId: string): Promise<Post | null> {
   try {
     const post = await postService.getPostById(postId);
