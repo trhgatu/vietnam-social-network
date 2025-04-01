@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+/* import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '@/shared/contexts/auth-context';
 
@@ -37,4 +37,4 @@ export const useSocket = () => {
   }, [token]);
 
   return socketRef.current;
-};
+}; */

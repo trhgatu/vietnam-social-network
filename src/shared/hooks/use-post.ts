@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+/* import { useEffect, useCallback } from 'react';
 import { useSocket } from './use-socket';
 import { useAuth } from '@/shared/contexts/auth-context';
 
@@ -94,4 +94,4 @@ export const usePost = () => {
     toggleLike,
     addComment
   };
-};
+}; */

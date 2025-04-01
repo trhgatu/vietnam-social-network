@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+/* import { useEffect, useCallback } from 'react';
 import { useSocket } from './use-socket';
 
 interface Notification {
@@ -46,4 +46,4 @@ export const useNotification = () => {
   return {
     markAsRead
   };
-};
+}; */
