@@ -1,4 +1,4 @@
-/* 'use client'
+'use client'
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -6,18 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MoveLeft } from "lucide-react";
-import { useAuth } from "@/shared/contexts/auth-context";
-import { useRouter } from "next/navigation";
-import instance from "@/api-client/axios-client";
-import { useToast } from "@/hooks/use-toast";
 
 import { BadgeHelp } from "lucide-react";
 
 export default function ForgotPassword() {
-    const { toast } = useToast();
     const [email, setEmail] = useState("");
-    const { login } = useAuth();
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -26,23 +19,7 @@ export default function ForgotPassword() {
         setLoading(true);
         setError(null);
 
-        try {
-            const response = await instance.post("/auth/forgot-password", { email });
-            if (response.data.success) {
-                login(response.data.user)
-                toast({
-                    description: `${response?.data.message}`
-                })
-                router.push('/home');
-            } else {
-                setError(response.data.message);
-            }
-        } catch (err) {
-            console.log(err)
-            setError("Email hoặc mật khẩu không đúng.");
-        } finally {
-            setLoading(false);
-        }
+
     };
 
     return (
@@ -92,4 +69,3 @@ export default function ForgotPassword() {
         </div>
     );
 }
- */
