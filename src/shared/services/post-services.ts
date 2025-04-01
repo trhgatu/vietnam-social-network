@@ -55,7 +55,7 @@ class PostService {
 
     async deletePost(postId: string): Promise<boolean> {
         try {
-            await instance.delete(`${this.baseUrl}/${postId}`);
+            await instance.delete(`${this.baseUrl}/delete/${postId}`);
             return true;
         } catch (error) {
             console.error('Error deleting post:', error);

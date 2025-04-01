@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { PostForm } from "@/app/(main)/home/components/post-form";
-import { fetchPostsByUsername } from "@/api-client/posts-api";
+import { fetchPostsByUsername, deletePost } from "@/api-client/posts-api";
 import { Post } from "@/shared/types";
 import { timeAgo } from "@/shared/utils/timeAgo";
 
@@ -62,6 +62,11 @@ export default function TimelinePage() {
       [postId]: !prev[postId]
     }));
   };
+  const handleDeletePost = async (postId: string) => {
+    await deletePost(postId);
+    setPosts(prev => prev.filter(post => post._id !== postId));
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -109,7 +114,11 @@ export default function TimelinePage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="cursor-pointer">Lưu bài viết</DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => handleDeletePost(post._id)}
+                      >Xóa bài viết
+                      </DropdownMenuItem>
                       <DropdownMenuItem className="cursor-pointer">Sao chép liên kết</DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer text-red-600">

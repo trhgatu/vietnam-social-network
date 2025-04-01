@@ -10,6 +10,7 @@ export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
     return [];
   }
 }
+
 export async function fetchPostsByUsername(username: string, page = 1, limit = 10): Promise<Post[]> {
   try {
     const posts = await postService.getPostByUsername(username, { page, limit });
@@ -20,6 +21,7 @@ export async function fetchPostsByUsername(username: string, page = 1, limit = 1
     return [];
   }
 }
+
 export async function fetchPostById(postId: string): Promise<Post | null> {
   try {
     const post = await postService.getPostById(postId);
