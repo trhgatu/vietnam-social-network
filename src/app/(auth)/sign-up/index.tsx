@@ -11,8 +11,7 @@ import ButtonApple from "@/components/button-apple";
 import ButtonFacebook from "@/components/button-facebook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { apiSendOTP } from "@/api-client";
-
+import { sendOTPForRegistration } from "@/api-client";
 export function SignUpPage() {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -26,7 +25,7 @@ export function SignUpPage() {
     setError(null);
 
     try {
-      const res = await apiSendOTP(email);
+      const res = await sendOTPForRegistration(email);
       if (res?.success) {
         toast({ description: res?.message || "OTP sent successfully!" });
         router.push(`/sign-up/verify?email=${encodeURIComponent(email)}`);

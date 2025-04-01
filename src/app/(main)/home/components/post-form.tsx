@@ -1,6 +1,6 @@
 'use client'
 
-import instance from "@/api-client/axios-client";
+import { createPost } from "@/api-client/posts-api";
 import { useSWRConfig } from "swr";
 import { useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
@@ -50,6 +50,11 @@ const audiences = [
     },
 ];
 
+const audienceMapping: Record<number, "public" | "private" | "friends"> = {
+    1: "public",
+    2: "friends",
+    3: "private",
+};
 export function PostForm() {
     const { toast } = useToast();
     const { mutate } = useSWRConfig();
@@ -65,32 +70,26 @@ export function PostForm() {
 
         setLoading(true);
         try {
-            const token = localStorage.getItem("token");
-            const response = await instance.post(
-                "/posts/create",
-                { content },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            if (response.data.success) {
+            const newPost = await createPost({ content,status: audienceMapping[selectedAudience.id], });
+
+            if (newPost) {
                 toast({
-                    description: response.data.message
+                    description: "Đăng bài thành công!",
                 });
                 setContent("");
                 setIsOpen(false);
                 mutate('/posts');
             } else {
                 toast({
-                    description: response.data.message,
-                    variant: "destructive"
+                    description: "Có lỗi xảy ra khi tạo bài viết!",
+                    variant: "destructive",
                 });
             }
         } catch (error) {
             console.error(error);
             toast({
-                description: t('post.error'),
-                variant: "destructive"
+                description: "Có lỗi xảy ra, vui lòng thử lại!",
+                variant: "destructive",
             });
         } finally {
             setLoading(false);
@@ -200,7 +199,7 @@ export function PostForm() {
 
                 <Separator className="my-1" />
 
-                <CardContent className="p-2 md:p-4 flex flex-wrap justify-between">
+                <CardContent className="p-2 flex flex-wrap justify-between">
                     <Button variant="ghost" className="flex-1 flex items-center justify-center gap-2">
                         <Image className="h-5 w-5 text-green-500" />
                         <span className="text-sm md:text-base">{t('post.photoVideo')}</span>

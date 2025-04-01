@@ -45,12 +45,10 @@ class FriendshipService {
         }
     }
 
-
-
     async getReceivedFriendRequests(): Promise<Friendship[]> {
         try {
             const response = await instance.get(`${this.baseUrl}/received-requests`);
-            return response.data;
+            return response.data.data;
         } catch (error) {
             console.error('Error fetching received friend requests:', error);
             return [];
@@ -60,7 +58,7 @@ class FriendshipService {
     async getSentFriendRequests(): Promise<Friendship[]> {
         try {
             const response = await instance.get(`${this.baseUrl}/sent-requests`);
-            return response.data;
+            return response.data.data;
         } catch (error) {
             console.error('Error fetching sent friend requests:', error);
             return [];

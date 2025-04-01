@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { fetcher } from "@/api-client";
+import { fetchPosts } from "@/api-client/posts-api";
 import {
     Card,
     CardContent,
@@ -38,10 +38,12 @@ import {
 import { useState } from "react";
 
 export function NewsFeed() {
-    const { data: posts, error, isLoading } = useSWR<{ data: Post[] }>('/posts', fetcher);
+    const { data: posts, error, isLoading } = useSWR(
+        ['/posts', 1, 10],
+        ([, page, limit]) => fetchPosts(page, limit),
+        { revalidateOnFocus: false }
+    );
     const { t } = useTranslation('common');
-
-    // Tracking liked states for each post (in a real app, this would come from the API)
     const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
 
     const handleLikePost = (postId: string) => {
@@ -82,14 +84,14 @@ export function NewsFeed() {
 
     return (
         <div>
-            {!posts?.data?.length ? (
+            {!posts?.length ? (
                 <Card className="py-8">
                     <div className="text-center text-gray-500 dark:text-gray-400">
                         <p>{t('post.noPosts')}</p>
                     </div>
                 </Card>
             ) : (
-                posts.data.map((post: Post) => {
+                posts.map((post: Post) => {
                     const timeAgo = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
                     const isLiked = likedPosts[post._id] || false;
 
